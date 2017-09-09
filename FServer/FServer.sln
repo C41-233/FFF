@@ -4,12 +4,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 15.0.26430.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FServerBase", "FServerBase\FServerBase.csproj", "{EC7D3FB0-F475-4B34-9960-4A72EBBD6B1C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4FCD72BD-AF01-4F9E-983A-38DCE99EAEDA} = {4FCD72BD-AF01-4F9E-983A-38DCE99EAEDA}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FBase", "FBase\FBase.csproj", "{4FCD72BD-AF01-4F9E-983A-38DCE99EAEDA}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Base", "Base", "{5FFDB5D6-BB6E-4172-B035-1FCF822A361E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Main", "Main\Main.csproj", "{CBCD128B-6757-43CE-94AB-844285527A5B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{EC7D3FB0-F475-4B34-9960-4A72EBBD6B1C} = {EC7D3FB0-F475-4B34-9960-4A72EBBD6B1C}
+		{4FCD72BD-AF01-4F9E-983A-38DCE99EAEDA} = {4FCD72BD-AF01-4F9E-983A-38DCE99EAEDA}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
