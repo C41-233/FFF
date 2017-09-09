@@ -1,19 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FFF.Server.Application
+﻿namespace FFF.Server.Application
 {
     public interface IFApplication
     {
 
-        void OnStart();
+        void OnInit(string[] args);
 
         void OnTick();
 
-        void OnStop();
+        void OnDestroy();
 
     }
 }
