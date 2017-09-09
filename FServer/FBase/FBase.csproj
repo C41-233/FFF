@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F3C3A206-28C4-4270-B214-89C7F5EC5418}</ProjectGuid>
+    <ProjectGuid>{4FCD72BD-AF01-4F9E-983A-38DCE99EAEDA}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>FFFBase</RootNamespace>
-    <AssemblyName>FFFBase</AssemblyName>
+    <RootNamespace>FBase</RootNamespace>
+    <AssemblyName>FBase</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -42,7 +42,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
