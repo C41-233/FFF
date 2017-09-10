@@ -3,6 +3,7 @@ using FFF.Server.Application;
 using FFF.Server.Application.TimeTick;
 using FFF.Server.Timer;
 using System;
+using System.Net.Sockets;
 
 namespace Main
 {
@@ -23,17 +24,18 @@ namespace Main
 
         void IFApplication.OnInit(string[] args)
         {
-            Console.WriteLine($"{FTimeTick.MillisecondsFromStart} init");
-            FTimers.StartTimerAt(new FDateTime(2017, 9, 10, 16, 16), () => { Console.WriteLine("1233");});
+            //var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IPv4);
         }
 
         void IFApplication.OnDestroy()
         {
-            Console.WriteLine("stop");
         }
 
         void IFApplication.OnTick()
         {
+
+
+
         }
 
     }
