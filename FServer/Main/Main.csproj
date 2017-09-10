@@ -46,9 +46,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\..\FCommon\FBase\FBase.csproj">
       <Project>{4fcd72bd-af01-4f9e-983a-38dce99eaeda}</Project>
       <Name>FBase</Name>

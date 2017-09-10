@@ -20,6 +20,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FBase", "..\FCommon\FBase\FBase.csproj", "{4FCD72BD-AF01-4F9E-983A-38DCE99EAEDA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FNet", "..\FCommon\FNet\FNet.csproj", "{193CE2DE-3545-4087-9EF2-0419117F2983}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4FCD72BD-AF01-4F9E-983A-38DCE99EAEDA} = {4FCD72BD-AF01-4F9E-983A-38DCE99EAEDA}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
