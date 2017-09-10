@@ -3,7 +3,12 @@
     public class IdGenerator
     {
 
-        private ulong current = 0;
+        private ulong current;
+
+        public IdGenerator(ulong init = 0)
+        {
+            this.current = init;
+        }
 
         public ulong NextValue()
         {

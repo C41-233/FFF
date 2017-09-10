@@ -13,25 +13,11 @@ namespace FFF.Server.Coroutine
         private static readonly List<CoroutineContext> coroutines = new List<CoroutineContext>();
         private static readonly List<CoroutineContext> coroutinesToAdd = new List<CoroutineContext>();
 
-        private static readonly Dictionary<ulong, CoroutineContext> idToCoroutine = new Dictionary<ulong, CoroutineContext>();
-
-        internal static CoroutineHandle StartCoroutine(IEnumerator coroutine)
+        internal static ICoroutine StartCoroutine(IEnumerator coroutine)
         {
             var context = new CoroutineContext(coroutine);
-
             coroutinesToAdd.Add(context);
-            idToCoroutine[context.Id] = context;
-
             return context.Handle;
-        }
-
-        internal static void StopCoroutine(CoroutineHandle c)
-        {
-            if (!idToCoroutine.TryGetValue(c.Id, out CoroutineContext coroutine))
-            {
-                return;
-            }
-            coroutine.IsDisposed = true;
         }
 
         internal static void OnTick()
@@ -48,25 +34,18 @@ namespace FFF.Server.Coroutine
                 {
                     if (coroutines[i].IsDisposed)
                     {
-                        RemoveCoroutineAt(i);
+                        coroutines.RemoveAt(i);
                         i--;
                         continue;
                     }
                     YieldDo(coroutines[i]);
                     if (coroutines[i].IsDisposed)
                     {
-                        RemoveCoroutineAt(i);
+                        coroutines.RemoveAt(i);
                         i--;
                     }
                 }
             }
-        }
-
-        private static void RemoveCoroutineAt(int index)
-        {
-            var coroutine = coroutines[index];
-            coroutines.RemoveAt(index);
-            idToCoroutine.Remove(coroutine.Id);
         }
 
         //执行协程的一帧，凡是yield return的位置，至少要等一帧
@@ -117,10 +96,10 @@ namespace FFF.Server.Coroutine
     internal class CoroutineContext
     {
 
-        private static readonly IdGenerator IdGen = new IdGenerator();
+        public ICoroutine Handle => handle;
+        private readonly CoroutineHandle handle = new CoroutineHandle();
 
-        public CoroutineHandle Handle { get; } = new CoroutineHandle(IdGen.NextValue());
-        public ulong Id => Handle.Id;
+        public ulong Id => handle.Id;
 
         private readonly IEnumerator Coroutine;
 
@@ -128,8 +107,8 @@ namespace FFF.Server.Coroutine
 
         public bool IsDisposed
         {
-            get => Handle.IsDone;
-            set => Handle.IsDone = value;
+            get => handle.IsDone;
+            set => handle.IsDone = value;
         }
 
         public bool MoveNext()
@@ -140,7 +119,7 @@ namespace FFF.Server.Coroutine
         public object Current => Coroutine.Current;
 
         public bool IsYield => Yield?.IsYield ?? false;
-        public bool IsSuspended => Handle.IsSuspended;
+        public bool IsSuspended => handle.IsSuspended;
 
         public CoroutineContext(IEnumerator c, ICoroutineYield y = null)
         {
@@ -157,12 +136,9 @@ namespace FFF.Server.Coroutine
     internal class CoroutineHandle : ICoroutine
     {
 
-        public ulong Id { get; }
+        private static readonly IdGenerator IdGen = new IdGenerator();
 
-        public CoroutineHandle(ulong id)
-        {
-            this.Id = id;
-        }
+        public ulong Id { get; } = IdGen.NextValue();
 
         public bool IsDone { get; set; } = false;
         public bool IsSuspended { get; private set; } = false;
@@ -181,7 +157,7 @@ namespace FFF.Server.Coroutine
 
         public void Stop()
         {
-            CoroutineManager.StopCoroutine(this);
+            IsDone = true;
         }
     }
 

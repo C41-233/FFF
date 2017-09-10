@@ -28,11 +28,12 @@ namespace FFF.Server.Application
 
                 try
                 {
-                    CoroutineManager.OnTick();
                     app.OnTick();
+                    CoroutineManager.OnTick();
                 }
                 catch (Exception e)
                 {
+                    //todo 异常处理
                     Console.WriteLine(e);
                     break;
                 }

@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography;
-
-namespace FFF.Base.Util
+﻿namespace FFF.Base.Util
 {
 
     public delegate R FFunc<out R>();

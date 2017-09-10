@@ -1,6 +1,7 @@
 ﻿using FFF.Server.Application;
 using System;
 using System.Collections;
+using System.Threading;
 using FFF.Base.Linq;
 using FFF.Server.Application.Time;
 using FFF.Server.Coroutine;
@@ -40,12 +41,14 @@ namespace Main
 
         IEnumerator Do()
         {
-            var c = FCoroutines.StartCoroutine(Do2);
-            yield return Do1();
-            c.Stop();
-            yield return new WaitForSeconds(5);
-            c.Resume();
-            yield return Do1();
+            Console.WriteLine($"{FTimeTick.MillisecondsFromStart} sleep");
+            yield return new WaitForJob<int>(5, i =>
+            {
+                Console.WriteLine(i);
+                Thread.Sleep(5000);
+                Console.WriteLine(i);
+            });
+            Console.WriteLine($"{FTimeTick.MillisecondsFromStart} awake");
         }
 
         IEnumerator Do1()
