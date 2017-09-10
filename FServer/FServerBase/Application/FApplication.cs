@@ -1,6 +1,7 @@
 ﻿using System;
-using FFF.Server.Application.Time;
+using FFF.Server.Application.TimeTick;
 using FFF.Server.Coroutine;
+using FFF.Server.Timer;
 
 namespace FFF.Server.Application
 {
@@ -29,6 +30,7 @@ namespace FFF.Server.Application
                 try
                 {
                     app.OnTick();
+                    TimerManager.OnTick();
                     CoroutineManager.OnTick();
                 }
                 catch (Exception e)

@@ -1,6 +1,6 @@
 ﻿using FFF.Base.Time;
 
-namespace FFF.Server.Application.Time
+namespace FFF.Server.Application.TimeTick
 {
 
     public static class FTimeTick

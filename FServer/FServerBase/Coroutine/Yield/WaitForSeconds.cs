@@ -1,5 +1,5 @@
 ﻿using FFF.Base.Time;
-using FFF.Server.Application.Time;
+using FFF.Server.Application.TimeTick;
 
 namespace FFF.Server.Coroutine.Yield
 {

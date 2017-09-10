@@ -3,9 +3,11 @@ using System;
 using System.Collections;
 using System.Threading;
 using FFF.Base.Linq;
-using FFF.Server.Application.Time;
+using FFF.Base.Time;
+using FFF.Server.Application.TimeTick;
 using FFF.Server.Coroutine;
 using FFF.Server.Coroutine.Yield;
+using FFF.Server.Timer;
 
 namespace Main
 {
@@ -27,7 +29,7 @@ namespace Main
         void IFApplication.OnInit(string[] args)
         {
             Console.WriteLine($"{FTimeTick.MillisecondsFromStart} init");
-            FCoroutines.StartCoroutine(Do);
+            FTimers.StartTimerAt(new FDateTime(2017, 9, 10, 16, 16), () => { Console.WriteLine("1233");});
         }
 
         void IFApplication.OnDestroy()
@@ -37,34 +39,6 @@ namespace Main
 
         void IFApplication.OnTick()
         {
-        }
-
-        IEnumerator Do()
-        {
-            Console.WriteLine($"{FTimeTick.MillisecondsFromStart} sleep");
-            yield return new WaitForJob<int>(5, i =>
-            {
-                Console.WriteLine(i);
-                Thread.Sleep(5000);
-                Console.WriteLine(i);
-            });
-            Console.WriteLine($"{FTimeTick.MillisecondsFromStart} awake");
-        }
-
-        IEnumerator Do1()
-        {
-            foreach (var i in F.For(2))
-            {
-                Console.WriteLine($"{FTimeTick.MillisecondsFromStart} {i}");
-                yield return new WaitForSeconds(1.5f);
-            }
-        }
-
-        IEnumerator Do2()
-        {
-            Console.WriteLine($"{FTimeTick.MillisecondsFromStart} haha");
-            yield return new WaitForSeconds(5);
-            Console.WriteLine($"{FTimeTick.MillisecondsFromStart} haha");
         }
 
     }

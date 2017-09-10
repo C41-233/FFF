@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 
-namespace FFF.Server.Application.Time
+namespace FFF.Server.Application.TimeTick
 {
     internal class TimeFrame
     {

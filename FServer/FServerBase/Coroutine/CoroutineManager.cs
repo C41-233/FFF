@@ -29,21 +29,19 @@ namespace FFF.Server.Coroutine
             }
 
             //do
+            for(var i=0; i<coroutines.Count; i++)
             {
-                for(var i=0; i<coroutines.Count; i++)
+                if (coroutines[i].IsDisposed)
                 {
-                    if (coroutines[i].IsDisposed)
-                    {
-                        coroutines.RemoveAt(i);
-                        i--;
-                        continue;
-                    }
-                    YieldDo(coroutines[i]);
-                    if (coroutines[i].IsDisposed)
-                    {
-                        coroutines.RemoveAt(i);
-                        i--;
-                    }
+                    coroutines.RemoveAt(i);
+                    i--;
+                    continue;
+                }
+                YieldDo(coroutines[i]);
+                if (coroutines[i].IsDisposed)
+                {
+                    coroutines.RemoveAt(i);
+                    i--;
                 }
             }
         }

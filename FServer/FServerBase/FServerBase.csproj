@@ -61,9 +61,11 @@
     <Compile Include="Coroutine\ICoroutine.cs" />
     <Compile Include="Coroutine\Yield\WaitForThread.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Application\Time\TimeFrame.cs" />
-    <Compile Include="Application\Time\FTimeTick.cs" />
-    <Compile Include="Application\Time\TimeTickCache.cs" />
+    <Compile Include="Application\TimeTick\TimeFrame.cs" />
+    <Compile Include="Application\TimeTick\FTimeTick.cs" />
+    <Compile Include="Application\TimeTick\TimeTickCache.cs" />
+    <Compile Include="Timer\FTimers.cs" />
+    <Compile Include="Timer\TimerManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

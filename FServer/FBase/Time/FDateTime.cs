@@ -32,6 +32,16 @@ namespace FFF.Base.Time
         {
         }
 
+        public FDateTime(int year, int month, int day, int hour, int minute, int second = 0, int millisecond = 0)
+            : this(new DateTime(year, month, day, hour, minute, second, millisecond))
+        {
+        }
+
+        public FDateTime(int year, int month, int day)
+            : this(new DateTime(year, month, day))
+        {
+        }
+
         private readonly DateTime dt;
 
         public long TimeStamp { get; }
