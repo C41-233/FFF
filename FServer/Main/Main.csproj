@@ -50,6 +50,10 @@
       <Project>{4fcd72bd-af01-4f9e-983a-38dce99eaeda}</Project>
       <Name>FBase</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\FCommon\FNet\FNet.csproj">
+      <Project>{193CE2DE-3545-4087-9EF2-0419117F2983}</Project>
+      <Name>FNet</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FServerBase\FServerBase.csproj">
       <Project>{EC7D3FB0-F475-4B34-9960-4A72EBBD6B1C}</Project>
       <Name>FServerBase</Name>

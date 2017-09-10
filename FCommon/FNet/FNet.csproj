@@ -32,6 +32,8 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -40,7 +42,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Network\IConnection.cs" />
+    <Compile Include="Network\IFServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TCP\FTcpConnection.cs" />
+    <Compile Include="TCP\FTcpConnectionConfig.cs" />
+    <Compile Include="TCP\FTcpServer.cs" />
+    <Compile Include="TCP\FTcpServerConfig.cs" />
+    <Compile Include="Network\Exception.cs" />
+    <Compile Include="TCP\Protocol\Package.cs" />
+    <Compile Include="TCP\Protocol\PackageType.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\FBase\FBase.csproj">
@@ -48,9 +59,6 @@
       <Name>FBase</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Network\" />
-    <Folder Include="TCP\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

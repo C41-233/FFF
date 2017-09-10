@@ -73,6 +73,7 @@ namespace FFF.Server.Coroutine
             catch (Exception)
             {
                 //协程执行过程中发生异常
+                //todo 异常处理
                 context.IsDisposed = true;
                 return;
             }

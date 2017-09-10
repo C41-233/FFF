@@ -1,9 +1,9 @@
-﻿using FFF.Base.Time;
-using FFF.Server.Application;
-using FFF.Server.Application.TimeTick;
-using FFF.Server.Timer;
+﻿using FFF.Server.Application;
 using System;
-using System.Net.Sockets;
+using System.IO;
+using FFF.Server.Application.TimeTick;
+using FNet.Network;
+using FNet.TCP;
 
 namespace Main
 {
@@ -13,7 +13,7 @@ namespace Main
         {
             FApplication.Run<MainApplication>(args, new FApplicationConfig()
             {
-                Tick= 20,
+                Tick= 1000,
             });
             Console.Read();
         }
@@ -22,9 +22,27 @@ namespace Main
     class MainApplication : IFApplication
     {
 
+        private IConnection client;
+
         void IFApplication.OnInit(string[] args)
         {
-            //var socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.IPv4);
+            var config = new FTcpServerConfig()
+            {
+                IpAsString = "127.0.0.1"
+            };
+            var server = new FTcpServer(config);
+            server.OnClientConnected += conn =>
+            {
+                Console.WriteLine("connected");
+                client = conn;
+                client.BeginReceive();
+            };
+            server.OnClientDisconnected += conn =>
+            {
+
+                Console.WriteLine("disconnected");
+            };
+            server.BeginAccept();
         }
 
         void IFApplication.OnDestroy()
@@ -33,9 +51,7 @@ namespace Main
 
         void IFApplication.OnTick()
         {
-
-
-
+            client?.Flush();
         }
 
     }
