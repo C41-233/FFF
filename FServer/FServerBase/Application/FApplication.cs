@@ -1,7 +1,7 @@
-﻿using System;
-using FFF.Server.Application.TimeTick;
+﻿using FFF.Server.Application.TimeTick;
 using FFF.Server.Coroutine;
 using FFF.Server.Timer;
+using System;
 
 namespace FFF.Server.Application
 {

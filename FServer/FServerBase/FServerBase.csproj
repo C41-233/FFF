@@ -71,11 +71,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\FBase\FBase.csproj">
-      <Project>{4FCD72BD-AF01-4F9E-983A-38DCE99EAEDA}</Project>
+    <ProjectReference Include="..\..\FCommon\FBase\FBase.csproj">
+      <Project>{4fcd72bd-af01-4f9e-983a-38dce99eaeda}</Project>
       <Name>FBase</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\FCommon\FNet\FNet.csproj">
+      <Project>{193ce2de-3545-4087-9ef2-0419117f2983}</Project>
+      <Name>FNet</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
