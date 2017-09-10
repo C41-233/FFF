@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Threading;
-using FFF.Server.Time;
+using FFF.Server.Application.Time;
+using FFF.Server.Coroutine;
 
 namespace FFF.Server.Application
 {
@@ -28,11 +28,12 @@ namespace FFF.Server.Application
 
                 try
                 {
+                    CoroutineManager.OnTick();
                     app.OnTick();
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e.StackTrace);
+                    Console.WriteLine(e);
                     break;
                 }
             }

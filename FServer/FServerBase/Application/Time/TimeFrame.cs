@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 
-namespace FFF.Server.Time
+namespace FFF.Server.Application.Time
 {
     internal class TimeFrame
     {
@@ -16,13 +16,13 @@ namespace FFF.Server.Time
             this.logicTick = (long) logicTick;
             TimeTickCache.SetTimeNow();
 
-            var currentFrame = TimeTick.NowReal.TimeStamp;
+            var currentFrame = FTimeTick.NowReal.TimeStamp;
             nextFrame = currentFrame + this.realTick;
         }
 
         internal void JoinFrame()
         {
-            var currentFrame = TimeTick.NowReal.TimeStamp;
+            var currentFrame = FTimeTick.NowReal.TimeStamp;
             if (nextFrame > currentFrame)
             {
                 Thread.CurrentThread.Join((int)(nextFrame - currentFrame));

@@ -45,9 +45,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Linq\EnumerableExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Time\FDateTime.cs" />
     <Compile Include="Time\DateTimeExtension.cs" />
+    <Compile Include="Time\TimeUnit.cs" />
+    <Compile Include="Linq\F.cs" />
+    <Compile Include="Util\FAction.cs" />
+    <Compile Include="Util\FFunc.cs" />
+    <Compile Include="Util\IdGenerator.cs" />
+    <Compile Include="Util\Singleton.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
