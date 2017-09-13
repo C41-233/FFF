@@ -1,8 +1,10 @@
 ﻿using FFF.Server.Application;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using FFF.Base.Collection;
+using System.Collections;
+using System.Threading;
+using FFF.Base.Util.Coroutine.Yield;
+using FFF.Server.Application.Coroutine;
+using FFF.Server.Application.Tick;
 using FNet.Network;
 using FNet.TCP;
 
@@ -14,7 +16,7 @@ namespace Main
         {
             Application.Run<MainApplication>(args, new ApplicationConfig()
             {
-                Tick= 1000,
+                Tick= 50,
             });
             Console.Read();
         }
@@ -44,6 +46,7 @@ namespace Main
                 Console.WriteLine("disconnected err="+err);
             };
             server.BeginAccept();
+            Coroutines.StartCoroutine(Fo);
         }
 
         void IApplication.OnDestroy()
@@ -53,6 +56,25 @@ namespace Main
         void IApplication.OnTick()
         {
             client?.Flush();
+        }
+
+        IEnumerator Fo()
+        {
+            yield return Do();
+            while (true)
+            {
+                yield return new WaitForSeconds(1);
+                Console.WriteLine(TimeTick.MillisecondsFromStart + "123");
+            }
+        }
+
+        IEnumerator Do()
+        {
+            Console.WriteLine(TimeTick.MillisecondsFromStart + "321");
+            yield return new WaitForJob(() =>
+            {
+                Thread.Sleep(1000);
+            });
         }
 
     }

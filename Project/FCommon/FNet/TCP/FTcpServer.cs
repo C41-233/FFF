@@ -43,6 +43,11 @@ namespace FNet.TCP
             sysSocket.Close();
         }
 
+        public void Update()
+        {
+            
+        }
+
         private void Accept(IAsyncResult ar)
         {
             var socket = sysSocket.EndAccept(ar);

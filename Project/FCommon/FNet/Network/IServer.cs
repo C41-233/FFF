@@ -10,6 +10,8 @@ namespace FNet.Network
 
         void BeginAccept();
 
+        void Update();
+
         void Close();
 
     }
