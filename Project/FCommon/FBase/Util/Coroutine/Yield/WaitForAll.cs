@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace FFF.Server.Coroutine.Yield
+namespace FFF.Base.Util.Coroutine.Yield
 {
     public class WaitForAll : ICoroutineYield
     {

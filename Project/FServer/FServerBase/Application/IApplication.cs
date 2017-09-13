@@ -1,6 +1,6 @@
 ﻿namespace FFF.Server.Application
 {
-    public interface IFApplication
+    public interface IApplication
     {
 
         void OnInit(string[] args);

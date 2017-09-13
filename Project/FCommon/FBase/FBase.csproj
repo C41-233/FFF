@@ -45,8 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Collection\FByteArrayBuffer.cs" />
-    <Compile Include="Collection\FMemoryBuffer.cs" />
+    <Compile Include="Collection\ByteArrayBuffer.cs" />
+    <Compile Include="Collection\MemoryBuffer.cs" />
     <Compile Include="Linq\EnumerableExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Time\FDateTime.cs" />
@@ -54,6 +54,15 @@
     <Compile Include="Time\TimeUnit.cs" />
     <Compile Include="Linq\F.cs" />
     <Compile Include="Util\Action.cs" />
+    <Compile Include="Util\Coroutine\CoroutineManager.cs" />
+    <Compile Include="Util\Coroutine\ICoroutine.cs" />
+    <Compile Include="Util\Coroutine\ICoroutineYield.cs" />
+    <Compile Include="Util\Coroutine\Yield\WaitForAll.cs" />
+    <Compile Include="Util\Coroutine\Yield\WaitForAny.cs" />
+    <Compile Include="Util\Coroutine\Yield\WaitForAtLeast.cs" />
+    <Compile Include="Util\Coroutine\Yield\WaitForCoroutine.cs" />
+    <Compile Include="Util\Coroutine\Yield\WaitForJob.cs" />
+    <Compile Include="Util\Coroutine\Yield\WaitForThread.cs" />
     <Compile Include="Util\Func.cs" />
     <Compile Include="Util\IdGenerator.cs" />
     <Compile Include="Util\Singleton.cs" />

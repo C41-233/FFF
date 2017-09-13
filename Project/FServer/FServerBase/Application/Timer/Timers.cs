@@ -1,8 +1,8 @@
 ﻿using FFF.Base.Time;
 using FFF.Base.Util;
-using FFF.Server.Application.TimeTick;
+using FFF.Server.Application.Tick;
 
-namespace FFF.Server.Timer
+namespace FFF.Server.Application.Timer
 {
 
     /// <summary>
@@ -10,13 +10,13 @@ namespace FFF.Server.Timer
     /// ·效率高于协程
     /// ·定时器基于物理时间
     /// </summary>
-    public static class FTimers
+    public static class Timers
     {
 
         public static ITimer StartTimerAfter(ulong milliseconds, FAction callback)
         {
             return TimerManager.StartTimer(
-                FTimeTick.NowReal.TimeStamp + (long) milliseconds,
+                TimeTick.NowReal.TimeStamp + (long) milliseconds,
                 callback
             );
         }

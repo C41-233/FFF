@@ -1,7 +1,6 @@
 ﻿using System.Threading;
-using FFF.Base.Util;
 
-namespace FFF.Server.Coroutine.Yield
+namespace FFF.Base.Util.Coroutine.Yield
 {
     public class WaitForJob : ICoroutineYield
     {

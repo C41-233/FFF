@@ -1,7 +1,6 @@
-﻿using System.Linq;
-using FFF.Base.Linq;
+﻿using FFF.Base.Linq;
 
-namespace FFF.Server.Coroutine.Yield
+namespace FFF.Base.Util.Coroutine.Yield
 {
     public class WaitForAtLeast : ICoroutineYield
     {

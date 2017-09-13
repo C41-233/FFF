@@ -1,6 +1,4 @@
-﻿using FFF.Base.Util;
-
-namespace FFF.Server.Coroutine
+﻿namespace FFF.Base.Util.Coroutine
 {
     public interface ICoroutine
     {

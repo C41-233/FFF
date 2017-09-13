@@ -1,9 +1,9 @@
 ﻿using FFF.Base.Time;
 
-namespace FFF.Server.Application.TimeTick
+namespace FFF.Server.Application.Tick
 {
 
-    public static class FTimeTick
+    public static class TimeTick
     {
 
         public static FDateTime Now { get; internal set; }

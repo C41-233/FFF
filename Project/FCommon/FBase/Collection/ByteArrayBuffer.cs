@@ -1,6 +1,6 @@
 ﻿namespace FFF.Base.Collection
 {
-    public class FByteArrayBuffer
+    public class ByteArrayBuffer
     {
 
         public byte[] Buffer { get; private set; }
@@ -14,12 +14,12 @@
         public int Remain => Capacity - Tail;
         public int Length => Tail - Offset;
 
-        public FByteArrayBuffer()
+        public ByteArrayBuffer()
         {
             Buffer = new byte[1024];
         }
 
-        public FByteArrayBuffer(int capacity)
+        public ByteArrayBuffer(int capacity)
         {
             Buffer = new byte[capacity];
         }

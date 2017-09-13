@@ -1,22 +1,22 @@
-﻿using FFF.Server.Application.TimeTick;
-using FFF.Server.Coroutine;
-using FFF.Server.Timer;
-using System;
+﻿using System;
+using FFF.Server.Application.Coroutine;
+using FFF.Server.Application.Tick;
+using FFF.Server.Application.Timer;
 
 namespace FFF.Server.Application
 {
-    public static class FApplication
+    public static class Application
     {
 
         public static void Run<T>(string[] args)
-            where T : IFApplication, new()
+            where T : IApplication, new()
         {
-            var config = new FApplicationConfig();
+            var config = new ApplicationConfig();
             Run<T>(args, config);
         }
 
-        public static void Run<T>(string[] args, FApplicationConfig config)
-            where T : IFApplication, new()
+        public static void Run<T>(string[] args, ApplicationConfig config)
+            where T : IApplication, new()
         {
             var app = new T();
 
@@ -30,8 +30,6 @@ namespace FFF.Server.Application
                 try
                 {
                     app.OnTick();
-                    TimerManager.OnTick();
-                    FCoroutineManager.OnTick();
                 }
                 catch (Exception e)
                 {
@@ -39,6 +37,9 @@ namespace FFF.Server.Application
                     Console.WriteLine(e);
                     break;
                 }
+
+                TimerManager.OnTick();
+                Coroutines.OnTick();
             }
             app.OnDestroy();
         }

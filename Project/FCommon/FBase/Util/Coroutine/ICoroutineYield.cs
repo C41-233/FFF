@@ -1,4 +1,4 @@
-﻿namespace FFF.Server.Coroutine.Yield
+﻿namespace FFF.Base.Util.Coroutine
 {
 
     public interface ICoroutineYield

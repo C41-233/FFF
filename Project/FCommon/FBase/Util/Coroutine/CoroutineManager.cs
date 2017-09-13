@@ -1,26 +1,28 @@
-﻿using FFF.Base.Util;
-using FFF.Server.Coroutine.Yield;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using FFF.Base.Util.Coroutine.Yield;
 
-namespace FFF.Server.Coroutine
+namespace FFF.Base.Util.Coroutine
 {
 
-    internal class FCoroutineManager
+    /// <summary>
+    /// 时间无关的协程管理
+    /// </summary>
+    public class CoroutineManager
     {
 
-        private static readonly List<CoroutineContext> coroutines = new List<CoroutineContext>();
-        private static readonly List<CoroutineContext> coroutinesToAdd = new List<CoroutineContext>();
+        private readonly List<CoroutineContext> coroutines = new List<CoroutineContext>();
+        private readonly List<CoroutineContext> coroutinesToAdd = new List<CoroutineContext>();
 
-        internal static ICoroutine StartCoroutine(IEnumerator coroutine)
+        public ICoroutine StartCoroutine(IEnumerator coroutine)
         {
             var context = new CoroutineContext(coroutine);
             coroutinesToAdd.Add(context);
             return context.Handle;
         }
 
-        internal static void OnTick()
+        public void Update(long timestamp)
         {
             //add
             {
@@ -47,7 +49,7 @@ namespace FFF.Server.Coroutine
         }
 
         //执行协程的一帧，凡是yield return的位置，至少要等一帧
-        private static void YieldDo(CoroutineContext context)
+        private void YieldDo(CoroutineContext context)
         {
             //等待
             if (context.IsSuspended)

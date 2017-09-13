@@ -1,6 +1,6 @@
 ﻿using System.Threading;
 
-namespace FFF.Server.Coroutine.Yield
+namespace FFF.Base.Util.Coroutine.Yield
 {
     public class WaitForThread : ICoroutineYield
     {

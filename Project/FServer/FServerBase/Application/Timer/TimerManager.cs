@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using FFF.Base.Util;
+using FFF.Server.Application.Tick;
+using System.Collections.Generic;
 using System.Linq;
-using FFF.Base.Util;
-using FFF.Server.Application.TimeTick;
 
-namespace FFF.Server.Timer
+namespace FFF.Server.Application.Timer
 {
     internal static class TimerManager
     {
@@ -55,7 +55,7 @@ namespace FFF.Server.Timer
                 {
                     return 0;
                 }
-                var remain = time - FTimeTick.NowReal.TimeStamp;
+                var remain = time - TimeTick.NowReal.TimeStamp;
                 return remain < 0 ? 0 : remain;
             }
         }

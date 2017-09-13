@@ -22,7 +22,7 @@ namespace FNet.TCP.Buffer
         private Socket Socket => Connection.Socket;
 
         private readonly List<byte[]> readQueue = new List<byte[]>();
-        private readonly FMemoryBuffer readBuffer = new FMemoryBuffer();
+        private readonly MemoryBuffer readBuffer = new MemoryBuffer();
         private readonly byte[] readCache;
 
         private ReceiveStatus status;

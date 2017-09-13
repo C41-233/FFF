@@ -3,7 +3,7 @@
 namespace FFF.Base.Collection
 {
 
-    public class FMemoryBuffer
+    public class MemoryBuffer
     {
 
         private byte[] buffer;
@@ -15,12 +15,12 @@ namespace FFF.Base.Collection
 
         public int Capacity => buffer.Length;
 
-        public FMemoryBuffer()
+        public MemoryBuffer()
         {
             buffer = new byte[1024];
         }
 
-        public FMemoryBuffer(int capacity)
+        public MemoryBuffer(int capacity)
         {
             buffer = new byte[capacity];
         }

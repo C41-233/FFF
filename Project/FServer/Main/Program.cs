@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using FFF.Base.Collection;
-using FFF.Server.Application.TimeTick;
 using FNet.Network;
 using FNet.TCP;
 
@@ -13,7 +12,7 @@ namespace Main
     {
         private static void Main(string[] args)
         {
-            FApplication.Run<MainApplication>(args, new FApplicationConfig()
+            Application.Run<MainApplication>(args, new ApplicationConfig()
             {
                 Tick= 1000,
             });
@@ -21,12 +20,12 @@ namespace Main
         }
     }
 
-    class MainApplication : IFApplication
+    class MainApplication : IApplication
     {
 
         private IConnection client;
 
-        void IFApplication.OnInit(string[] args)
+        void IApplication.OnInit(string[] args)
         {
             var config = new FTcpServerConfig()
             {
@@ -47,11 +46,11 @@ namespace Main
             server.BeginAccept();
         }
 
-        void IFApplication.OnDestroy()
+        void IApplication.OnDestroy()
         {
         }
 
-        void IFApplication.OnTick()
+        void IApplication.OnTick()
         {
             client?.Flush();
         }

@@ -1,6 +1,6 @@
 ﻿namespace FFF.Server.Application
 {
-    public class FApplicationConfig
+    public class ApplicationConfig
     {
 
         public ulong TickReal = 50;

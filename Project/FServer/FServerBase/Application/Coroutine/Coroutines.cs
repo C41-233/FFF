@@ -1,8 +1,9 @@
-﻿using FFF.Base.Util;
-using FFF.Server.Coroutine.Yield;
-using System.Collections;
+﻿using System.Collections;
+using FFF.Base.Util;
+using FFF.Base.Util.Coroutine;
+using FFF.Server.Application.Tick;
 
-namespace FFF.Server.Coroutine
+namespace FFF.Server.Application.Coroutine
 {
 
     /// <summary>
@@ -12,12 +13,14 @@ namespace FFF.Server.Coroutine
     /// 每个yield return至少暂停一帧
     /// 协程基于逻辑时间
     /// </summary>
-    public static class FCoroutines
+    public static class Coroutines
     {
+
+        private static readonly CoroutineManager manager = new CoroutineManager();
 
         public static ICoroutine StartCoroutine(IEnumerator coroutine)
         {
-            return FCoroutineManager.StartCoroutine(coroutine);
+            return manager.StartCoroutine(coroutine);
         }
 
         public static ICoroutine StartCoroutine(FFunc<IEnumerator> coroutine)
@@ -66,6 +69,11 @@ namespace FFF.Server.Coroutine
                 }
                 yield return new WaitForMilliseconds(milliseconds);
             }
+        }
+
+        internal static void OnTick()
+        {
+            manager.Update(TimeTick.Now.TimeStamp);
         }
 
     }

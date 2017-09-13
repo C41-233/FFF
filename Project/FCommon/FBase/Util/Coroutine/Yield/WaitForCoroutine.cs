@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-namespace FFF.Server.Coroutine.Yield
+﻿namespace FFF.Base.Util.Coroutine.Yield
 {
     public class WaitForCoroutine : ICoroutineYield
     {
@@ -10,11 +8,6 @@ namespace FFF.Server.Coroutine.Yield
         public WaitForCoroutine(ICoroutine coroutine)
         {
             this.coroutine = coroutine;
-        }
-
-        public WaitForCoroutine(IEnumerator coroutine)
-            : this(FCoroutines.StartCoroutine(coroutine))
-        {
         }
 
         public bool IsYield => coroutine.IsDone == false;

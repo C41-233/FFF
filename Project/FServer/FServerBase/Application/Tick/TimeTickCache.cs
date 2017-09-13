@@ -1,6 +1,6 @@
 ﻿using FFF.Base.Time;
 
-namespace FFF.Server.Application.TimeTick
+namespace FFF.Server.Application.Tick
 {
     internal static class TimeTickCache
     {
@@ -8,7 +8,7 @@ namespace FFF.Server.Application.TimeTick
         static TimeTickCache()
         {
             var now = FDateTime.Now;
-            FTimeTick.Start = now;
+            TimeTick.Start = now;
             SetTimeNow(now);
         }
 
@@ -24,10 +24,10 @@ namespace FFF.Server.Application.TimeTick
 
         internal static void SetTimeNow(FDateTime real, FDateTime logic)
         {
-            FTimeTick.Last = FTimeTick.Now;
-            FTimeTick.LastReal = FTimeTick.NowReal;
-            FTimeTick.Now = logic;
-            FTimeTick.NowReal = real;
+            TimeTick.Last = TimeTick.Now;
+            TimeTick.LastReal = TimeTick.NowReal;
+            TimeTick.Now = logic;
+            TimeTick.NowReal = real;
         }
 
         internal static void TickTime(long milliseconds)
@@ -37,7 +37,7 @@ namespace FFF.Server.Application.TimeTick
 
         internal static void TickTime(FDateTime real, long milliseconds)
         {
-            SetTimeNow(real, FTimeTick.Now.AddMilliseconds(milliseconds));
+            SetTimeNow(real, TimeTick.Now.AddMilliseconds(milliseconds));
         }
 
     }
