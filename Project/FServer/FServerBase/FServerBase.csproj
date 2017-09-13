@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{EC7D3FB0-F475-4B34-9960-4A72EBBD6B1C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>FFF.Server</RootNamespace>
+    <AssemblyName>FServer</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Application\FApplication.cs" />
+    <Compile Include="Application\FApplicationConfig.cs" />
+    <Compile Include="Application\IFApplication.cs" />
+    <Compile Include="Coroutine\FCoroutineManager.cs" />
+    <Compile Include="Coroutine\FCoroutines.cs" />
+    <Compile Include="Coroutine\ICoroutine.cs" />
+    <Compile Include="Coroutine\Yield\ICoroutineYield.cs" />
+    <Compile Include="Coroutine\Yield\WaitForAll.cs" />
+    <Compile Include="Coroutine\Yield\WaitForAny.cs" />
+    <Compile Include="Coroutine\Yield\WaitForAtLeast.cs" />
+    <Compile Include="Coroutine\Yield\WaitForCoroutine.cs" />
+    <Compile Include="Coroutine\Yield\WaitForJob.cs" />
+    <Compile Include="Coroutine\Yield\WaitForMilliseconds.cs" />
+    <Compile Include="Coroutine\Yield\WaitForSeconds.cs" />
+    <Compile Include="Coroutine\Yield\WaitForThread.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Application\TimeTick\TimeFrame.cs" />
+    <Compile Include="Application\TimeTick\FTimeTick.cs" />
+    <Compile Include="Application\TimeTick\TimeTickCache.cs" />
+    <Compile Include="Timer\FTimers.cs" />
+    <Compile Include="Timer\TimerManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\FCommon\FBase\FBase.csproj">
+      <Project>{4fcd72bd-af01-4f9e-983a-38dce99eaeda}</Project>
+      <Name>FBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\FCommon\FNet\FNet.csproj">
+      <Project>{193ce2de-3545-4087-9ef2-0419117f2983}</Project>
+      <Name>FNet</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
