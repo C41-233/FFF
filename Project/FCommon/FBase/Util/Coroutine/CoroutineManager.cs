@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using FFF.Base.Util.Coroutine.Yield;
+using FFF.Base.Util.Generator;
 
 namespace FFF.Base.Util.Coroutine
 {
@@ -22,7 +23,7 @@ namespace FFF.Base.Util.Coroutine
             return context.Handle;
         }
 
-        public void Update(long timestamp)
+        public void Update()
         {
             //add
             {
@@ -74,7 +75,7 @@ namespace FFF.Base.Util.Coroutine
             }
             catch (Exception)
             {
-                //协程执行过程中发生异常
+                //todo 协程执行过程中发生异常
                 context.IsDisposed = true;
                 return;
             }

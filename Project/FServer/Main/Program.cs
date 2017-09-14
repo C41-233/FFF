@@ -5,6 +5,7 @@ using System.Threading;
 using FFF.Base.Util.Coroutine.Yield;
 using FFF.Server.Application.Coroutine;
 using FFF.Server.Application.Tick;
+using FFF.Server.Application.Timer;
 using FNet.Network;
 using FNet.TCP;
 
@@ -46,7 +47,15 @@ namespace Main
                 Console.WriteLine("disconnected err="+err);
             };
             server.BeginAccept();
-            Coroutines.StartCoroutine(Fo);
+
+            Timers.StartTimerAfter(5000, () =>
+            {
+                Console.WriteLine("timer  "+TimeTick.MillisecondsFromStart);
+                Timers.StartTimerAfter(1000, () =>
+                {
+                    Console.WriteLine("timer  " + TimeTick.MillisecondsFromStart);
+                });
+            });
         }
 
         void IApplication.OnDestroy()
@@ -56,25 +65,6 @@ namespace Main
         void IApplication.OnTick()
         {
             client?.Flush();
-        }
-
-        IEnumerator Fo()
-        {
-            yield return Do();
-            while (true)
-            {
-                yield return new WaitForSeconds(1);
-                Console.WriteLine(TimeTick.MillisecondsFromStart + "123");
-            }
-        }
-
-        IEnumerator Do()
-        {
-            Console.WriteLine(TimeTick.MillisecondsFromStart + "321");
-            yield return new WaitForJob(() =>
-            {
-                Thread.Sleep(1000);
-            });
         }
 
     }

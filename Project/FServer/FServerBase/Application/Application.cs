@@ -38,7 +38,7 @@ namespace FFF.Server.Application
                     break;
                 }
 
-                TimerManager.OnTick();
+                Timers.OnTick(TimeTick.Now.TimeStamp);
                 Coroutines.OnTick();
             }
             app.OnDestroy();

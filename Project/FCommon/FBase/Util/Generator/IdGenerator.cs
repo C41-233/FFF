@@ -1,6 +1,6 @@
-﻿namespace FFF.Base.Util
+﻿namespace FFF.Base.Util.Generator
 {
-    public class IdGenerator
+    public class IdGenerator : IValueGenerator<ulong>
     {
 
         private ulong current;

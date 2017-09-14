@@ -1,4 +1,5 @@
 ﻿using FFF.Base.Time;
+using FFF.Base.Time.Timer;
 using FFF.Base.Util;
 using FFF.Server.Application.Tick;
 
@@ -13,9 +14,11 @@ namespace FFF.Server.Application.Timer
     public static class Timers
     {
 
+        private static readonly TimerManager manager = new TimerManager();
+
         public static ITimer StartTimerAfter(ulong milliseconds, FAction callback)
         {
-            return TimerManager.StartTimer(
+            return manager.StartTimer(
                 TimeTick.NowReal.TimeStamp + (long) milliseconds,
                 callback
             );
@@ -23,22 +26,19 @@ namespace FFF.Server.Application.Timer
 
         public static ITimer StartTimerAt(long timestamp, FAction callback)
         {
-            return TimerManager.StartTimer(timestamp, callback);
+            return manager.StartTimer(timestamp, callback);
         }
 
         public static ITimer StartTimerAt(FDateTime dt, FAction callback)
         {
-            return TimerManager.StartTimer(dt.TimeStamp, callback);
+            return manager.StartTimer(dt.TimeStamp, callback);
+        }
+
+        internal static void OnTick(long now)
+        {
+            manager.Update(now);
         }
 
     }
     
-    public interface ITimer
-    {
-
-        long Remain { get; }
-
-        void Stop();
-
-    }
 }

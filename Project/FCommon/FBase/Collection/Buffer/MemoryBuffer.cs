@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace FFF.Base.Collection
+namespace FFF.Base.Collection.Buffer
 {
 
     public class MemoryBuffer
@@ -44,7 +44,7 @@ namespace FFF.Base.Collection
             }
 
             var newBuffer = new byte[newLen];
-            Buffer.BlockCopy(buffer, head, newBuffer, 0, Length);
+            System.Buffer.BlockCopy(buffer, head, newBuffer, 0, Length);
             buffer = newBuffer;
 
             tail -= head;
@@ -69,7 +69,7 @@ namespace FFF.Base.Collection
                 throw new ArgumentOutOfRangeException();
             }
             TryPushAdjust(len);
-            Buffer.BlockCopy(bs, offset, buffer, tail, len);
+            System.Buffer.BlockCopy(bs, offset, buffer, tail, len);
             tail += len;
         }
 
@@ -85,7 +85,7 @@ namespace FFF.Base.Collection
         public byte[] PopAll()
         {
             var rst = new byte[Length];
-            Buffer.BlockCopy(buffer, head, rst, 0, Length);
+            System.Buffer.BlockCopy(buffer, head, rst, 0, Length);
             head = tail = 0;
             return rst;
         }
@@ -102,7 +102,7 @@ namespace FFF.Base.Collection
             }
 
             var rst = new byte[len];
-            Buffer.BlockCopy(buffer, head, rst, 0, len);
+            System.Buffer.BlockCopy(buffer, head, rst, 0, len);
             head += len;
             return rst;
         }
@@ -127,7 +127,7 @@ namespace FFF.Base.Collection
                 throw new InvalidOperationException();
             }
             var rst = new byte[len];
-            Buffer.BlockCopy(buffer, head, rst, 0, len);
+            System.Buffer.BlockCopy(buffer, head, rst, 0, len);
             return rst;
         }
 

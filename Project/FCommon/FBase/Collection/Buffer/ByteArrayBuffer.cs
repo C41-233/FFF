@@ -1,4 +1,4 @@
-﻿namespace FFF.Base.Collection
+﻿namespace FFF.Base.Collection.Buffer
 {
     public class ByteArrayBuffer
     {

@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net.Sockets;
-using FFF.Base.Collection;
+﻿using FFF.Base.Collection.Buffer;
 using FNet.Network;
 using FNet.TCP.Protocol;
+using System;
+using System.Collections.Generic;
+using System.Net.Sockets;
 
 namespace FNet.TCP.Buffer
 {
@@ -143,7 +143,7 @@ namespace FNet.TCP.Buffer
         {
             status = ReceiveStatus.ReadType;
             expectLength = FTcpProperty.HeadTypeLength;
-            DoReceive();
+            ProcessReceive();
         }
 
     }

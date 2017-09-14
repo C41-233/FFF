@@ -56,7 +56,6 @@
     <Compile Include="Application\Tick\TimeTick.cs" />
     <Compile Include="Application\Tick\TimeTickCache.cs" />
     <Compile Include="Application\Timer\Timers.cs" />
-    <Compile Include="Application\Timer\TimerManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\FCommon\FBase\FBase.csproj">
