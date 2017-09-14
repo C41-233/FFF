@@ -13,6 +13,7 @@ namespace FNet.TCP
 
         public event FAction<IConnection> OnClientConnected;
         public event FAction<IConnection, ConnectionCloseType> OnClientDisconnected;
+        public event FAction<IConnection, byte[]> OnClientReceive;
 
         private readonly TcpConnectionConfig connectionConfig;
 

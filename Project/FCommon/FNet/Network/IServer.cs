@@ -5,10 +5,19 @@ namespace FNet.Network
     public interface IServer
     {
 
-        //当一个客户端连接时触发，在Update线程中调用
+        /// <summary>
+        /// 当一个客户端连接时触发，在Update线程中调用
+        /// </summary>
         event FAction<IConnection> OnClientConnected;
-        //当一个客户端断开连接时触发，在Update线程中调用
+        /// <summary>
+        /// 当一个客户端断开连接时触发，在Update线程中调用
+        /// </summary>
         event FAction<IConnection, ConnectionCloseType> OnClientDisconnected;
+        /// <summary>
+        /// 当接收到客户端数据时触发，在Update线程中调用
+        /// 参数的数据可以直接由应用程序使用和修改，底层服务保证收到的数据是一次Send调用发送的完整数据
+        /// </summary>
+        event FAction<IConnection, byte[]> OnClientReceive;
 
         //开始接收客户端连接，此后可以调用EndAccept停止接收客户端连接
         void BeginAccept();

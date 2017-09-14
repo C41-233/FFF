@@ -6,9 +6,9 @@
 
         void BeginReceive();
 
-        void Close();
+        //void EndReceive();
 
-        void Flush();
+        void Close();
 
     }
 }
