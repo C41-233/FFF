@@ -1,6 +1,6 @@
 ﻿namespace FNet.TCP.Protocol
 {
-    public static class FTcpProperty
+    public static class TcpConstant
     {
 
         public const int HeadTypeLength = 1;

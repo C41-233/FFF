@@ -1,4 +1,5 @@
-﻿using FFF.Base.Util;
+﻿using System;
+using FFF.Base.Util;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -33,7 +34,14 @@ namespace FFF.Base.Time.Timer
                 if (timer.Remain == 0)
                 {
                     timers.RemoveAt(0);
-                    timer.Callback();
+                    try
+                    {
+                        timer.Callback();
+                    }
+                    catch (Exception)
+                    {
+                        //todo 异常处理
+                    }
                     continue;
                 }
                 break;

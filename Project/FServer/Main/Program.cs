@@ -30,11 +30,11 @@ namespace Main
 
         void IApplication.OnInit(string[] args)
         {
-            var config = new FTcpServerConfig()
+            var config = new TcpServerConfig()
             {
                 IpAsString = "127.0.0.1"
             };
-            var server = new FTcpServer(config);
+            var server = new TcpServer(config);
             server.OnClientConnected += conn =>
             {
                 Console.WriteLine("connected");

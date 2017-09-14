@@ -7,10 +7,10 @@ namespace FNet.TCP.Buffer
     internal abstract class SendBuffer
     {
 
-        protected FTcpConnection Connection { get; }
+        protected TcpConnection Connection { get; }
         protected Socket Socket => Connection.Socket;
 
-        protected SendBuffer(FTcpConnection conn, FTcpConnectionConfig config)
+        protected SendBuffer(TcpConnection conn, TcpConnectionConfig config)
         {
             this.Connection = conn;
         }
@@ -22,7 +22,7 @@ namespace FNet.TCP.Buffer
     internal class FlushSendBuffer : SendBuffer
     {
 
-        public FlushSendBuffer(FTcpConnection conn, FTcpConnectionConfig config) : base(conn, config)
+        public FlushSendBuffer(TcpConnection conn, TcpConnectionConfig config) : base(conn, config)
         {
         }
 

@@ -18,7 +18,7 @@ namespace FNet.TCP.Buffer
             ReadData,
         }
 
-        private readonly FTcpConnection Connection;
+        private readonly TcpConnection Connection;
         private Socket Socket => Connection.Socket;
 
         private readonly List<byte[]> readQueue = new List<byte[]>();
@@ -28,7 +28,7 @@ namespace FNet.TCP.Buffer
         private ReceiveStatus status;
         private int expectLength;
 
-        public ReceiveBuffer(FTcpConnection conn, FTcpConnectionConfig config)
+        public ReceiveBuffer(TcpConnection conn, TcpConnectionConfig config)
         {
             this.Connection = conn;
             this.readCache = new byte[config.ReadCacheSize];
@@ -118,7 +118,7 @@ namespace FNet.TCP.Buffer
         {
             //todo 最大长度限制
             status = ReceiveStatus.ReadDataLength;
-            expectLength = FTcpProperty.DataLenghtFieldLength;
+            expectLength = TcpConstant.DataLenghtFieldLength;
             ProcessReceive();
         }
 
@@ -142,7 +142,7 @@ namespace FNet.TCP.Buffer
         private void NextPackage()
         {
             status = ReceiveStatus.ReadType;
-            expectLength = FTcpProperty.HeadTypeLength;
+            expectLength = TcpConstant.HeadTypeLength;
             ProcessReceive();
         }
 

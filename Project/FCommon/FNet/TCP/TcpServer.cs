@@ -6,7 +6,7 @@ using FNet.Network;
 
 namespace FNet.TCP
 {
-    public class FTcpServer : IServer
+    public class TcpServer : IServer
     {
 
         private readonly Socket sysSocket;
@@ -14,9 +14,9 @@ namespace FNet.TCP
         public event FAction<IConnection> OnClientConnected;
         public event FAction<IConnection, ConnectionCloseType> OnClientDisconnected;
 
-        private readonly FTcpConnectionConfig connectionConfig;
+        private readonly TcpConnectionConfig connectionConfig;
 
-        public FTcpServer(FTcpServerConfig config)
+        public TcpServer(TcpServerConfig config)
         {
             this.sysSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);  
 
@@ -24,7 +24,7 @@ namespace FNet.TCP
             this.sysSocket.Bind(endPoint);
             this.sysSocket.Listen(config.Backlog);
 
-            this.connectionConfig = new FTcpConnectionConfig()
+            this.connectionConfig = new TcpConnectionConfig()
             {
                 KeepAlive = config.KeepAlive,
                 PackageMaxSize = config.PackageMaxSize,
@@ -52,13 +52,13 @@ namespace FNet.TCP
         {
             var socket = sysSocket.EndAccept(ar);
 
-            var connection = new FTcpConnection(socket, connectionConfig);
+            var connection = new TcpConnection(socket, connectionConfig);
             OnClientConnected?.Invoke(connection);
 
             sysSocket.BeginAccept(Accept, null);
         }
 
-        internal void OnConnectionDisconnected(FTcpConnection conn, ConnectionCloseType type)
+        internal void OnConnectionDisconnected(TcpConnection conn, ConnectionCloseType type)
         {
             OnClientDisconnected?.Invoke(conn, type);
         }

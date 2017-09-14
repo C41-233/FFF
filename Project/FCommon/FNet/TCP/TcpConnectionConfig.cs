@@ -1,12 +1,12 @@
 ﻿namespace FNet.TCP
 {
-    internal class FTcpConnectionConfig
+    internal class TcpConnectionConfig
     {
 
         public long KeepAlive;
         public int ReadCacheSize;
         public int PackageMaxSize;
-        public FTcpServer Server;
+        public TcpServer Server;
 
     }
 }

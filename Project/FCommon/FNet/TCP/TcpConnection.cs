@@ -6,10 +6,10 @@ using System.Net.Sockets;
 namespace FNet.TCP
 {
 
-    internal class FTcpConnection : IConnection
+    internal class TcpConnection : IConnection
     {
 
-        private readonly FTcpServer server;
+        private readonly TcpServer server;
         internal Socket Socket { get; }
 
         internal ReceiveBuffer Receiver { get; }
@@ -19,7 +19,7 @@ namespace FNet.TCP
         private readonly long keepAlive;
         #endregion
 
-        public FTcpConnection(Socket socket, FTcpConnectionConfig config)
+        public TcpConnection(Socket socket, TcpConnectionConfig config)
         {
             this.Socket = socket;
             this.keepAlive = config.KeepAlive;

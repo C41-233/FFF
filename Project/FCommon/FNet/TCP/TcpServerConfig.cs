@@ -2,7 +2,7 @@
 
 namespace FNet.TCP
 {
-    public class FTcpServerConfig
+    public class TcpServerConfig
     {
 
         public IPAddress Ip
