@@ -1,11 +1,16 @@
 ﻿namespace FFF.Base.Util.Generator
 {
-    public class IdGenerator : IValueGenerator<ulong>
+
+    public interface IULongGenerator : IValueGenerator<ulong>
+    {
+    }
+
+    public class SequenceULongGenerator : IULongGenerator
     {
 
         private ulong current;
 
-        public IdGenerator(ulong init = 0)
+        public SequenceULongGenerator(ulong init = 0)
         {
             this.current = init;
         }
