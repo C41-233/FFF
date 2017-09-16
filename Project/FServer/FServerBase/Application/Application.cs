@@ -39,7 +39,7 @@ namespace FFF.Server.Application
                 }
 
                 Timers.OnTick(TimeTick.Now.TimeStamp);
-                Coroutines.OnTick();
+                Coroutines.OnTick(TimeTick.Now.TimeStamp);
             }
             app.OnDestroy();
         }

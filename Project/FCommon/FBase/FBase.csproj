@@ -59,11 +59,14 @@
     <Compile Include="Util\Coroutine\CoroutineManager.cs" />
     <Compile Include="Util\Coroutine\ICoroutine.cs" />
     <Compile Include="Util\Coroutine\ICoroutineYield.cs" />
+    <Compile Include="Util\Coroutine\Yield\ICoroutineTimerYield.cs" />
     <Compile Include="Util\Coroutine\Yield\WaitForAll.cs" />
     <Compile Include="Util\Coroutine\Yield\WaitForAny.cs" />
     <Compile Include="Util\Coroutine\Yield\WaitForAtLeast.cs" />
     <Compile Include="Util\Coroutine\Yield\WaitForCoroutine.cs" />
     <Compile Include="Util\Coroutine\Yield\WaitForJob.cs" />
+    <Compile Include="Util\Coroutine\Yield\WaitForMilliseconds.cs" />
+    <Compile Include="Util\Coroutine\Yield\WaitForSeconds.cs" />
     <Compile Include="Util\Coroutine\Yield\WaitForThread.cs" />
     <Compile Include="Util\Func.cs" />
     <Compile Include="Util\Generator\IdGenerator.cs" />

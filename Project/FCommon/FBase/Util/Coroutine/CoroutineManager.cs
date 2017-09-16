@@ -1,8 +1,7 @@
-﻿using System;
+﻿using FFF.Base.Util.Coroutine.Yield;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using FFF.Base.Util.Coroutine.Yield;
-using FFF.Base.Util.Generator;
 
 namespace FFF.Base.Util.Coroutine
 {
@@ -18,13 +17,17 @@ namespace FFF.Base.Util.Coroutine
 
         public ICoroutine StartCoroutine(IEnumerator coroutine)
         {
-            var context = new CoroutineContext(coroutine);
+            var context = new CoroutineContext(this, coroutine);
             coroutinesToAdd.Add(context);
             return context.Handle;
         }
 
-        public void Update()
+        private long now;
+
+        public void Update(long timestamp)
         {
+            this.now = timestamp;
+
             //add
             {
                 coroutines.AddRange(coroutinesToAdd);
@@ -61,6 +64,7 @@ namespace FFF.Base.Util.Coroutine
             {
                 return;
             }
+
             context.Yield = null;
 
             try
@@ -81,65 +85,77 @@ namespace FFF.Base.Util.Coroutine
             }
 
             var obj = context.Current;
+
             if (obj is IEnumerator enumerator)
             {
                 obj = new WaitForCoroutine(StartCoroutine(enumerator));
             }
+
             if (obj is ICoroutineYield coroutineYield)
             {
                 context.Yield = coroutineYield;
             }
-
+            else if (obj is ICoroutineTimerYield coroutineTimer)
+            {
+                context.Timestamp = now + coroutineTimer.Timeout;
+            }
         }
 
-    }
-
-    internal class CoroutineContext
-    {
-
-        public ICoroutine Handle => handle;
-        private readonly CoroutineHandle handle = new CoroutineHandle();
-
-        public ulong Id => handle.Id;
-
-        private readonly IEnumerator Coroutine;
-
-        public ICoroutineYield Yield;
-
-        public bool IsDisposed
+        private class CoroutineContext
         {
-            get => handle.IsDone;
-            set => handle.IsDone = value;
+
+            private readonly CoroutineManager manager;
+            public ICoroutine Handle => handle;
+            private readonly CoroutineHandle handle = new CoroutineHandle();
+
+            private readonly IEnumerator Coroutine;
+
+            public ICoroutineYield Yield { set; private get; }
+            public long Timestamp { set; private get; }
+
+            public bool IsDisposed
+            {
+                get => handle.IsDone;
+                set => handle.IsDone = value;
+            }
+
+            public bool MoveNext()
+            {
+                return Coroutine.MoveNext();
+            }
+
+            public object Current => Coroutine.Current;
+
+            public bool IsYield
+            {
+                get
+                {
+                    if (manager.now < Timestamp)
+                    {
+                        return true;
+                    }
+                    return Yield?.IsYield ?? false;
+                }
+            } 
+            public bool IsSuspended => handle.IsSuspended;
+
+            public CoroutineContext(CoroutineManager manager, IEnumerator c, ICoroutineYield y = null)
+            {
+                this.manager = manager;
+                this.Coroutine = c;
+                this.Yield = y;
+            }
+
+            public void Callback()
+            {
+                Handle.Callback?.Invoke();
+            }
         }
 
-        public bool MoveNext()
-        {
-            return Coroutine.MoveNext();
-        }
-
-        public object Current => Coroutine.Current;
-
-        public bool IsYield => Yield?.IsYield ?? false;
-        public bool IsSuspended => handle.IsSuspended;
-
-        public CoroutineContext(IEnumerator c, ICoroutineYield y = null)
-        {
-            this.Coroutine = c;
-            this.Yield = y;
-        }
-
-        public void Callback()
-        {
-            Handle.Callback?.Invoke();
-        }
     }
 
     internal class CoroutineHandle : ICoroutine
     {
-
-        private static readonly IdGenerator IdGen = new IdGenerator();
-
-        public ulong Id { get; } = IdGen.NextValue();
 
         public bool IsDone { get; set; } = false;
         public bool IsSuspended { get; private set; } = false;

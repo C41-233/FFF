@@ -49,8 +49,6 @@
     <Compile Include="Application\ApplicationConfig.cs" />
     <Compile Include="Application\IApplication.cs" />
     <Compile Include="Application\Coroutine\Coroutines.cs" />
-    <Compile Include="Application\Coroutine\WaitForMilliseconds.cs" />
-    <Compile Include="Application\Coroutine\WaitForSeconds.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Application\Tick\TimeFrame.cs" />
     <Compile Include="Application\Tick\TimeTick.cs" />

@@ -4,8 +4,6 @@
     public interface ITimer
     {
 
-        long Remain { get; }
-
         void Stop();
 
     }

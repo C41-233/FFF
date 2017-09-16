@@ -1,5 +1,7 @@
 ﻿using FFF.Base.Util;
 using FFF.Base.Util.Coroutine;
+using FFF.Base.Util.Coroutine.Yield;
+using FFF.Server.Application.Tick;
 using System.Collections;
 
 namespace FFF.Server.Application.Coroutine
@@ -70,9 +72,9 @@ namespace FFF.Server.Application.Coroutine
             }
         }
 
-        internal static void OnTick()
+        internal static void OnTick(long now)
         {
-            manager.Update();
+            manager.Update(now);
         }
 
     }

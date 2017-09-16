@@ -48,14 +48,19 @@ namespace Main
             };
             server.BeginAccept();
 
-            Timers.StartTimerAfter(5000, () =>
+            Coroutines.StartCoroutine(Do);
+        }
+
+        IEnumerator Do()
+        {
+            while (true)
             {
-                Console.WriteLine("timer  "+TimeTick.MillisecondsFromStart);
-                Timers.StartTimerAfter(1000, () =>
+                yield return new WaitForJob(() =>
                 {
-                    Console.WriteLine("timer  " + TimeTick.MillisecondsFromStart);
+                    Thread.Sleep(2000);
                 });
-            });
+                Console.WriteLine(TimeTick.MillisecondsFromStart);
+            }
         }
 
         void IApplication.OnDestroy()
@@ -64,7 +69,7 @@ namespace Main
 
         void IApplication.OnTick()
         {
-            client?.Flush();
+            //client?.Flush();
         }
 
     }

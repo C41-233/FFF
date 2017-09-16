@@ -25,7 +25,7 @@ namespace FFF.Server.Application.Tick
             var currentFrame = TimeTick.NowReal.TimeStamp;
             if (nextFrame > currentFrame)
             {
-                Thread.CurrentThread.Join((int)(nextFrame - currentFrame));
+                Thread.Sleep((int)(nextFrame - currentFrame));
             }
 
             TimeTickCache.TickTime(logicTick);
