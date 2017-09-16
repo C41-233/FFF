@@ -1,10 +1,9 @@
-﻿using FFF.Base.Util;
+﻿using System.Collections;
+using FFF.Base.Util;
 using FFF.Base.Util.Coroutine;
 using FFF.Base.Util.Coroutine.Yield;
-using FFF.Server.Application.Tick;
-using System.Collections;
 
-namespace FFF.Server.Application.Coroutine
+namespace FFF.Server.Application
 {
 
     /// <summary>
@@ -31,10 +30,10 @@ namespace FFF.Server.Application.Coroutine
 
         public static ICoroutine StartCoroutineAfter(long milliseconds, FAction coroutine)
         {
-            return StartCoroutine(CoroutineAfter(milliseconds, coroutine));
+            return StartCoroutine(AsCoroutineAfter(milliseconds, coroutine));
         }
 
-        public static IEnumerator CoroutineAfter(long milliseconds, FAction coroutine)
+        public static IEnumerator AsCoroutineAfter(long milliseconds, FAction coroutine)
         {
             yield return new WaitForMilliseconds(milliseconds);
             coroutine();
@@ -42,15 +41,15 @@ namespace FFF.Server.Application.Coroutine
 
         public static ICoroutine StartCoroutineEvery(long milliseconds, FAction coroutine)
         {
-            return StartCoroutine(CoroutineEvery(milliseconds, coroutine));
+            return StartCoroutine(AsCoroutineEvery(milliseconds, coroutine));
         }
 
         public static ICoroutine StartCoroutineEvery(long milliseconds, FFunc<bool> coroutine)
         {
-            return StartCoroutine(CoroutineEvery(milliseconds, coroutine));
+            return StartCoroutine(AsCoroutineEvery(milliseconds, coroutine));
         }
 
-        public static IEnumerator CoroutineEvery(long milliseconds, FAction coroutine)
+        public static IEnumerator AsCoroutineEvery(long milliseconds, FAction coroutine)
         {
             while (true)
             {
@@ -59,7 +58,7 @@ namespace FFF.Server.Application.Coroutine
             }
         }
 
-        public static IEnumerator CoroutineEvery(long milliseconds, FFunc<bool> coroutine)
+        public static IEnumerator AsCoroutineEvery(long milliseconds, FFunc<bool> coroutine)
         {
             while (true)
             {

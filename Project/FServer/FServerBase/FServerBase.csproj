@@ -48,12 +48,12 @@
     <Compile Include="Application\Application.cs" />
     <Compile Include="Application\ApplicationConfig.cs" />
     <Compile Include="Application\IApplication.cs" />
-    <Compile Include="Application\Coroutine\Coroutines.cs" />
+    <Compile Include="Application\Coroutines.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Application\Tick\TimeFrame.cs" />
     <Compile Include="Application\Tick\TimeTick.cs" />
     <Compile Include="Application\Tick\TimeTickCache.cs" />
-    <Compile Include="Application\Timer\Timers.cs" />
+    <Compile Include="Application\Timers.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\FCommon\FBase\FBase.csproj">
