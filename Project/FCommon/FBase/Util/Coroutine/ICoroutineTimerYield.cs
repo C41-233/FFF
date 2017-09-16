@@ -1,4 +1,4 @@
-﻿namespace FFF.Base.Util.Coroutine.Yield
+﻿namespace FFF.Base.Util.Coroutine
 {
     public interface ICoroutineTimerYield
     {

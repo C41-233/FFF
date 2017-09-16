@@ -59,7 +59,7 @@
     <Compile Include="Util\Coroutine\CoroutineManager.cs" />
     <Compile Include="Util\Coroutine\ICoroutine.cs" />
     <Compile Include="Util\Coroutine\ICoroutineYield.cs" />
-    <Compile Include="Util\Coroutine\Yield\ICoroutineTimerYield.cs" />
+    <Compile Include="Util\Coroutine\ICoroutineTimerYield.cs" />
     <Compile Include="Util\Coroutine\Yield\WaitForAll.cs" />
     <Compile Include="Util\Coroutine\Yield\WaitForAny.cs" />
     <Compile Include="Util\Coroutine\Yield\WaitForAtLeast.cs" />
