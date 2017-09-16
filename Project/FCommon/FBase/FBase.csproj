@@ -69,7 +69,7 @@
     <Compile Include="Util\Coroutine\Yield\WaitForSeconds.cs" />
     <Compile Include="Util\Coroutine\Yield\WaitForThread.cs" />
     <Compile Include="Util\Func.cs" />
-    <Compile Include="Util\Generator\SequenceULongGenerator.cs" />
+    <Compile Include="Util\Generator\ULongGenerator.cs" />
     <Compile Include="Util\Generator\IValueGenerator.cs" />
     <Compile Include="Util\Singleton.cs" />
   </ItemGroup>

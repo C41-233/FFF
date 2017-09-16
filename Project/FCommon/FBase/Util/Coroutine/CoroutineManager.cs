@@ -35,21 +35,24 @@ namespace FFF.Base.Util.Coroutine
             }
 
             //do
+            var slot = 0;
             for(var i=0; i<coroutines.Count; i++)
             {
-                if (coroutines[i].IsDisposed)
+                var coroutine = coroutines[i];
+                if (coroutine.IsDisposed)
                 {
-                    coroutines.RemoveAt(i);
-                    i--;
                     continue;
                 }
-                YieldDo(coroutines[i]);
-                if (coroutines[i].IsDisposed)
+                YieldDo(coroutine);
+                if (coroutine.IsDisposed)
                 {
-                    coroutines.RemoveAt(i);
-                    i--;
+                    continue;
                 }
+                coroutines[slot] = coroutine;
+                slot++;
             }
+
+            coroutines.RemoveRange(slot, coroutines.Count-slot);
         }
 
         //执行协程的一帧，凡是yield return的位置，至少要等一帧

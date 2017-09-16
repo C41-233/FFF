@@ -2,6 +2,7 @@
 using System;
 using System.Collections;
 using System.Threading;
+using FFF.Base.Linq;
 using FFF.Base.Util.Coroutine.Yield;
 using FFF.Server.Application.Tick;
 using FNet.Network;
@@ -47,11 +48,21 @@ namespace Main
             server.BeginAccept();
 
             Coroutines.StartCoroutine(Do);
+            Coroutines.StartCoroutine(Do1);
         }
 
         IEnumerator Do()
         {
             while (true)
+            {
+                yield return new WaitForSeconds(1);
+                Console.WriteLine(TimeTick.MillisecondsFromStart);
+            }
+        }
+
+        IEnumerator Do1()
+        {
+            foreach(var i in F.For(5))
             {
                 yield return new WaitForSeconds(1);
                 Console.WriteLine(TimeTick.MillisecondsFromStart);
