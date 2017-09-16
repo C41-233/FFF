@@ -55,10 +55,7 @@ namespace Main
         {
             while (true)
             {
-                yield return new WaitForJob(() =>
-                {
-                    Thread.Sleep(2000);
-                });
+                yield return new WaitForSeconds(1);
                 Console.WriteLine(TimeTick.MillisecondsFromStart);
             }
         }

@@ -3,25 +3,143 @@
 namespace FFF.Base.Collection.Buffer
 {
 
-    public class MemoryBuffer
+    public interface IMemoryBuffer
     {
+        
+        int Length { get; }
+
+        void Push(byte b);
+        void Push(byte[] bs);
+        void Push(byte[] bs, int offset, int len);
+
+        byte Pop();
+        byte[] Pop(int len);
+        void Pop(int len, byte[] bs, int offset);
+        byte[] PopAll();
+        void PopAll(byte[] bs, int offset);
+
+        byte Peek();
+        byte[] Peek(int len);
+        void Peek(int len, byte[] bs, int offset);
+
+        void Clear();
+
+    }
+
+    public abstract class MemoryBufferBase : IMemoryBuffer
+    {
+
+        public abstract int Length { get; }
+
+        public abstract void Push(byte b);
+
+        public virtual void Push(byte[] bs)
+        {
+            Push(bs, 0, bs.Length);
+        }
+
+        public virtual void Push(byte[] bs, int offset, int len)
+        {
+            if (offset < 0 || len < 0)
+            {
+                throw new ArgumentException();
+            }
+            if (bs == null)
+            {
+                throw new ArgumentNullException();
+            }
+            if (offset + len > bs.Length)
+            {
+                throw new ArgumentException();
+            }
+            for (var i = 0; i < len; i++)
+            {
+                Push(bs[offset+i]);
+            }
+        }
+
+        public abstract byte Pop();
+
+        public virtual byte[] Pop(int len)
+        {
+            if (len < 0)
+            {
+                throw new ArgumentException();
+            }
+            var rst = new byte[len];
+            Pop(len, rst, 0);
+            return rst;
+        }
+
+        public virtual void Pop(int len, byte[] bs, int offset)
+        {
+            if (len < 0 || offset < 0)
+            {
+                throw new ArgumentException();
+            }
+            if (bs == null)
+            {
+                throw new ArgumentNullException();
+            }
+            if (len >= Length)
+            {
+                throw new InvalidOperationException();
+            }
+            for (var i = 0; i < len; i++)
+            {
+                bs[offset + i] = Pop();
+            }
+        }
+
+        public virtual byte[] PopAll()
+        {
+            return Pop(Length);
+        }
+
+        public virtual void PopAll(byte[] bs, int offset)
+        {
+            Pop(Length, bs, offset);
+        }
+
+        public abstract byte Peek();
+
+        public virtual byte[] Peek(int len)
+        {
+            var rst = new byte[len];
+            Peek(len, rst, 0);
+            return rst;
+        }
+
+        public abstract void Peek(int len, byte[] bs, int offset);
+
+        public abstract void Clear();
+    }
+
+    public class MemoryBuffer : MemoryBufferBase
+    {
+
+        private const int DefaultBufferSize = 1024;
 
         private byte[] buffer;
 
         private int head;
         private int tail;
 
-        public int Length => tail - head;
+        public override int Length => tail - head;
 
         public int Capacity => buffer.Length;
 
         public MemoryBuffer()
+            : this(DefaultBufferSize)
         {
-            buffer = new byte[1024];
         }
 
         public MemoryBuffer(int capacity)
         {
+            if (capacity <= 0)
+            {
+                throw new ArgumentException();
+            }
             buffer = new byte[capacity];
         }
 
@@ -51,19 +169,36 @@ namespace FFF.Base.Collection.Buffer
             head = 0;
         }
 
-        public void Push(byte b)
+        private void TryPopAdjust()
+        {
+            if (Capacity > DefaultBufferSize * 2 && Length < Capacity / 4)
+            {
+                var newBuffer = new byte[Capacity / 2];
+                System.Buffer.BlockCopy(buffer, head, newBuffer, 0, Length);
+                buffer = newBuffer;
+            }
+            else if (head > Capacity / 2)
+            {
+                System.Buffer.BlockCopy(buffer, head, buffer, 0, Length);
+            }
+        }
+
+        public override void Push(byte b)
         {
             TryPushAdjust(1);
             buffer[tail++] = b;
         }
 
-        public void Push(byte[] bs)
+        public override void Push(byte[] bs, int offset, int len)
         {
-            Push(bs, 0 ,bs.Length);
-        }
-
-        public void Push(byte[] bs, int offset, int len)
-        {
+            if (offset <0 || len <0)
+            {
+                throw new ArgumentException();
+            }
+            if (bs == null)
+            {
+                throw new ArgumentNullException();
+            }
             if (offset + len > bs.Length)
             {
                 throw new ArgumentOutOfRangeException();
@@ -73,26 +208,33 @@ namespace FFF.Base.Collection.Buffer
             tail += len;
         }
 
-        public byte Pop()
+        public override byte Pop()
         {
             if (head == tail)
             {
                 throw new InvalidOperationException();
             }
-            return buffer[head++];
+            var rst = buffer[head++];
+            TryPopAdjust();
+            return rst;
         }
 
-        public byte[] PopAll()
+        public override byte[] PopAll()
         {
             var rst = new byte[Length];
             System.Buffer.BlockCopy(buffer, head, rst, 0, Length);
             head = tail = 0;
+            TryPopAdjust();
             return rst;
         }
 
-        public byte[] Pop(int len)
+        public override void Pop(int len, byte[] bs, int offset)
         {
             if (len <= 0)
+            {
+                throw new ArgumentException();
+            }
+            if (offset + len > bs.Length)
             {
                 throw new ArgumentException();
             }
@@ -101,13 +243,12 @@ namespace FFF.Base.Collection.Buffer
                 throw new InvalidOperationException();
             }
 
-            var rst = new byte[len];
-            System.Buffer.BlockCopy(buffer, head, rst, 0, len);
+            System.Buffer.BlockCopy(buffer, head, bs, offset, len);
             head += len;
-            return rst;
+            TryPopAdjust();
         }
 
-        public byte Peek()
+        public override byte Peek()
         {
             if (head == tail)
             {
@@ -116,24 +257,27 @@ namespace FFF.Base.Collection.Buffer
             return buffer[head];
         }
 
-        public byte[] Peek(int len)
+        public override void Peek(int len, byte[] bs, int offset)
         {
             if (len <= 0)
             {
                 throw new ArgumentException();
             }
+            if (bs == null)
+            {
+                throw new ArgumentNullException();   
+            }
             if (Length < len)
             {
                 throw new InvalidOperationException();
             }
-            var rst = new byte[len];
-            System.Buffer.BlockCopy(buffer, head, rst, 0, len);
-            return rst;
+            System.Buffer.BlockCopy(buffer, head, bs, offset, len);
         }
 
-        public void Clear()
+        public override void Clear()
         {
             head = tail = 0;
+            TryPopAdjust();
         }
     }
 }
