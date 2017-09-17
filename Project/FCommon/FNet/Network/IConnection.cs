@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace FNet.Network
+﻿namespace FNet.Network
 {
 
     public interface IConnection

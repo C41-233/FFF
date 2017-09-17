@@ -1,4 +1,5 @@
-﻿using FFF.Base.Util;
+﻿using FFF.Base.Time;
+using FFF.Base.Util;
 using FNet.Network;
 using System;
 using System.Collections.Concurrent;
@@ -6,7 +7,6 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using FFF.Base.Time;
 
 namespace FNet.TCP
 {
@@ -134,7 +134,7 @@ namespace FNet.TCP
             {
                 if (conn.IsShutdown)
                 {
-                    conn.Close(ConnectionCloseType.Application);
+                    conn.Close(ConnectionCloseType.ApplicationClose);
                 }
                 else
                 {

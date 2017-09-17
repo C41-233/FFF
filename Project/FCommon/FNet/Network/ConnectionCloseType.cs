@@ -3,7 +3,7 @@
     public enum ConnectionCloseType : int
     {
 
-        Application = -10000,
+        ApplicationClose = -10000,
         UnrecognizedPackage = -10001,
         PackageSizeTooLarge = -10002,
         KeepAliveTimeout = -10003,
