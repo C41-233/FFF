@@ -28,7 +28,6 @@ namespace Main
             var config = new TcpServerConfig()
             {
                 IpAsString = "127.0.0.1",
-                SendImmediately = false,
                 MaxConnection = 1,
                 KeepAlive = 5000,
             };

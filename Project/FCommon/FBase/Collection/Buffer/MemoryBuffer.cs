@@ -130,17 +130,8 @@ namespace FFF.Base.Collection.Buffer
         public int Capacity => buffer.Length;
 
         public MemoryBuffer()
-            : this(DefaultBufferSize)
         {
-        }
-
-        public MemoryBuffer(int capacity)
-        {
-            if (capacity <= 0)
-            {
-                throw new ArgumentException();
-            }
-            buffer = new byte[capacity];
+            this.buffer = new byte[DefaultBufferSize];
         }
 
         private void TryPushAdjust(int len)
@@ -171,7 +162,7 @@ namespace FFF.Base.Collection.Buffer
 
         private void TryPopAdjust()
         {
-            if (Capacity > DefaultBufferSize * 2 && Length < Capacity / 4)
+            if (Capacity >= DefaultBufferSize * 2 && Length < Capacity / 4)
             {
                 var newBuffer = new byte[Capacity / 2];
                 System.Buffer.BlockCopy(buffer, head, newBuffer, 0, Length);
