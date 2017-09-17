@@ -2,7 +2,6 @@
 using FNet.Network;
 using FNet.TCP.Protocol;
 using System;
-using System.Collections.Generic;
 using System.Net.Sockets;
 
 namespace FNet.TCP.Buffer
@@ -19,33 +18,59 @@ namespace FNet.TCP.Buffer
         }
 
         private readonly TcpConnection Connection;
-        private Socket Socket => Connection.Socket;
+        private TcpSocket Socket => Connection.Socket;
+        private TcpConnectionConfig Config => Connection.Config;
 
-        private readonly List<byte[]> readQueue = new List<byte[]>();
         private readonly MemoryBuffer readBuffer = new MemoryBuffer();
         private readonly byte[] readCache;
 
         private ReceiveStatus status;
         private int expectLength;
 
-        public ReceiveBuffer(TcpConnection conn, TcpConnectionConfig config)
+        private long lastReceiveTime;
+        private long nowTime;
+
+        public ReceiveBuffer(TcpConnection conn)
         {
             this.Connection = conn;
-            this.readCache = new byte[config.ReadCacheSize];
+            this.readCache = new byte[Config.ReadCacheSize];
         }
 
-        public void BeginReceive()
+        public void Begin(long timestamp)
         {
+            if (Connection.IsShutdown)
+            {
+                throw new ObjectDisposedException("ReceiveBuffer already shutdown.");
+            }
+            lastReceiveTime = nowTime = timestamp;
             NextPackage();
         }
 
         private void DoReceive()
         {
-            Socket.BeginReceive(readCache, 0, readCache.Length, SocketFlags.None, Receive, null);
+            if (Connection.IsShutdown)
+            {
+                return;
+            }
+            try
+            {
+                Socket.BeginReceive(readCache, 0, readCache.Length, ReceiveCallback);
+            }
+            catch (SocketException e)
+            {
+                Connection.Close((ConnectionCloseType) e.ErrorCode);
+            }
+            catch (ObjectDisposedException)
+            {
+            }
         }
 
-        private void Receive(IAsyncResult ar)
+        private void ReceiveCallback(IAsyncResult ar)
         {
+            if (Connection.IsShutdown)
+            {
+                return;
+            }
             int nread;
             try
             {
@@ -54,6 +79,10 @@ namespace FNet.TCP.Buffer
             catch (SocketException e)
             {
                 Connection.Close((ConnectionCloseType) e.ErrorCode);
+                return;
+            }
+            catch (ObjectDisposedException)
+            {
                 return;
             }
 
@@ -89,7 +118,6 @@ namespace FNet.TCP.Buffer
                         }
                         default:
                         {
-                            //包类型不能识别
                             Connection.Close(ConnectionCloseType.UnrecognizedPackage);
                             return;
                         }
@@ -110,15 +138,15 @@ namespace FNet.TCP.Buffer
 
         private void ProcessPing()
         {
-            Connection.Sender.ReplyPing();
+            lastReceiveTime = nowTime;
+            Connection.SendBuffer.ReplyPing();
             NextPackage();
         }
 
         private void ProcessDataLength()
         {
-            //todo 最大长度限制
             status = ReceiveStatus.ReadDataLength;
-            expectLength = TcpConstant.DataLenghtFieldLength;
+            expectLength = TcpConstant.DataLenghFieldLength;
             ProcessReceive();
         }
 
@@ -126,15 +154,21 @@ namespace FNet.TCP.Buffer
         {
             status = ReceiveStatus.ReadData;
             var b2 = readBuffer.Pop(2);
-            expectLength = BitConverter.ToUInt16(b2, 0);
+            expectLength = TcpConstant.BitConvert.ToUInt16(b2);
+
+            if (expectLength > Config.PackageMaxSize)
+            {
+                Connection.Close(ConnectionCloseType.PackageSizeTooLarge);
+            }
+
             ProcessReceive();
         }
 
         private void ProcessDataDone()
         {
+            lastReceiveTime = nowTime;
             var data = readBuffer.Pop(expectLength);
-            readQueue.Add(data);
-            Console.WriteLine(expectLength + "  "+System.Text.Encoding.Default.GetString(data));
+            Connection.Server.OnConnectionReceive(Connection, data);
 
             NextPackage();
         }
@@ -146,6 +180,20 @@ namespace FNet.TCP.Buffer
             ProcessReceive();
         }
 
+        public void Shutdown()
+        {
+            Socket.Shutdown(SocketShutdown.Receive);
+        }
+
+        public void Update(long timestamp)
+        {
+            nowTime = timestamp;
+
+            if (Config.KeepAlive > 0 && lastReceiveTime + Config.KeepAlive < nowTime)
+            {
+                Connection.Close(ConnectionCloseType.KeepAliveTimeout);
+            }
+        }
     }
 
 }

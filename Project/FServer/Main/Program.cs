@@ -1,12 +1,8 @@
 ﻿using FFF.Server.Application;
-using System;
-using System.Collections;
-using System.Threading;
-using FFF.Base.Linq;
-using FFF.Base.Util.Coroutine.Yield;
-using FFF.Server.Application.Tick;
 using FNet.Network;
 using FNet.TCP;
+using System;
+using System.Text;
 
 namespace Main
 {
@@ -25,48 +21,35 @@ namespace Main
     class MainApplication : IApplication
     {
 
-        private IConnection client;
+        private IServer server;
 
         void IApplication.OnInit(string[] args)
         {
             var config = new TcpServerConfig()
             {
-                IpAsString = "127.0.0.1"
+                IpAsString = "127.0.0.1",
+                SendImmediately = false,
+                MaxConnection = 1,
+                KeepAlive = 5000,
             };
-            var server = new TcpServer(config);
+            this.server = new TcpServer(config);
             server.OnClientConnected += conn =>
             {
                 Console.WriteLine("connected");
-                client = conn;
-                client.BeginReceive();
+                conn.Send(Encoding.Default.GetBytes("hello"));
+                //Coroutines.StartCoroutineAfter(5000, conn.Close);
             };
             server.OnClientDisconnected += (conn, err) =>
             {
-
                 Console.WriteLine("disconnected err="+err);
             };
+            server.OnClientReceive += (conn, data) =>
+            {
+                var rec = Encoding.Default.GetString(data);
+                Console.WriteLine("receive " + rec);
+                conn.Send(Encoding.Default.GetBytes("reply "+rec));
+            };
             server.BeginAccept();
-
-            Coroutines.StartCoroutine(Do);
-            Coroutines.StartCoroutine(Do1);
-        }
-
-        IEnumerator Do()
-        {
-            while (true)
-            {
-                yield return new WaitForSeconds(1);
-                Console.WriteLine(TimeTick.MillisecondsFromStart);
-            }
-        }
-
-        IEnumerator Do1()
-        {
-            foreach(var i in F.For(5))
-            {
-                yield return new WaitForSeconds(1);
-                Console.WriteLine(TimeTick.MillisecondsFromStart);
-            }
         }
 
         void IApplication.OnDestroy()
@@ -75,7 +58,7 @@ namespace Main
 
         void IApplication.OnTick()
         {
-            //client?.Flush();
+            server.Update();
         }
 
     }

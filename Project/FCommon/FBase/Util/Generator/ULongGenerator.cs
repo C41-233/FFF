@@ -1,4 +1,7 @@
-﻿namespace FFF.Base.Util.Generator
+﻿using System;
+using System.Threading;
+
+namespace FFF.Base.Util.Generator
 {
 
     public interface IULongGenerator : IValueGenerator<ulong>
@@ -17,7 +20,10 @@
 
         public ulong NextValue()
         {
-            return current++;
+            lock (this)
+            {
+                return current++;
+            }
         }
 
     }

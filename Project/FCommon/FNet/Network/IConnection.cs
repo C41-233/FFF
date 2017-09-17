@@ -1,12 +1,15 @@
-﻿namespace FNet.Network
+﻿using System;
+
+namespace FNet.Network
 {
 
     public interface IConnection
     {
 
-        void BeginReceive();
+        ulong ConnectionId { get; }
 
-        //void EndReceive();
+        void Send(byte[] bs);
+        void Send(byte[] bs, int offset, int length);
 
         void Close();
 

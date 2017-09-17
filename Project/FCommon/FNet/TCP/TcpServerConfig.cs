@@ -17,6 +17,8 @@ namespace FNet.TCP
             set => ip = value==null ? IPAddress.Any : IPAddress.Parse(value);
         }
 
+        public int MaxConnection = 1000;
+
         private IPAddress ip = IPAddress.Any;
 
         public int Port = 13000;
@@ -38,6 +40,13 @@ namespace FNet.TCP
         /// 接收缓冲区的大小
         /// </summary>
         public int ReadCacheSize = 2048;
+
+        /// <summary>
+        /// 当调用Send时，是否立即发送报文
+        /// true：立即发送报文
+        /// false：仅在Update中发送报文
+        /// </summary>
+        public bool SendImmediately = false;
 
     }
 }

@@ -56,6 +56,10 @@
     <Compile Include="Time\TimeUnit.cs" />
     <Compile Include="Linq\F.cs" />
     <Compile Include="Util\Action.cs" />
+    <Compile Include="Util\Atomic\AtomicBool.cs" />
+    <Compile Include="Util\BitConvert\BitConvertBase.cs" />
+    <Compile Include="Util\BitConvert\BitConverts.cs" />
+    <Compile Include="Util\BitConvert\LittleEndianBitConvert.cs" />
     <Compile Include="Util\Coroutine\CoroutineManager.cs" />
     <Compile Include="Util\Coroutine\ICoroutine.cs" />
     <Compile Include="Util\Coroutine\ICoroutineYield.cs" />

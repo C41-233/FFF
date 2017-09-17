@@ -1,21 +1,21 @@
 ﻿namespace FNet.TCP.Protocol
 {
 
-    public class FTcpPingPackage
+    public class TcpPingPackage
     {
 
         public readonly PackageType Type = PackageType.Ping;
 
     }
 
-    public class FTcpPongPackage
+    public class TcpPongPackage
     {
 
         public readonly PackageType Type = PackageType.Pong;
 
     }
 
-    public class FTcpDataPackage
+    public class TcpDataPackage
     {
 
         public readonly PackageType Type = PackageType.Data;

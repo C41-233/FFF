@@ -1,7 +1,6 @@
-﻿using FNet.Network;
+﻿using FFF.Base.Util.Atomic;
+using FNet.Network;
 using FNet.TCP.Buffer;
-using System.IO;
-using System.Net.Sockets;
 
 namespace FNet.TCP
 {
@@ -9,57 +8,94 @@ namespace FNet.TCP
     internal class TcpConnection : IConnection
     {
 
-        private readonly TcpServer server;
-        internal Socket Socket { get; }
+        public ulong ConnectionId { get; } = ConnectionIdProvidor.NextValue();
 
-        internal ReceiveBuffer Receiver { get; }
-        internal SendBuffer Sender { get; }
+        public TcpServer Server { get; }
+        public TcpSocket Socket { get; }
 
-        #region 属性
-        private readonly long keepAlive;
-        #endregion
+        public ReceiveBuffer ReceiveBuffer { get; }
+        public SendBuffer SendBuffer { get; }
 
-        public TcpConnection(Socket socket, TcpConnectionConfig config)
+        public TcpConnectionConfig Config { get; }
+
+        public bool IsShutdown => isShutdown;
+        private readonly AtomicBool isClosed = new AtomicBool(false);
+        private readonly AtomicBool isShutdown = new AtomicBool(false);
+
+        public TcpConnection(TcpSocket socket, TcpConnectionConfig config)
         {
             this.Socket = socket;
-            this.keepAlive = config.KeepAlive;
-            this.server = config.Server;
+            this.Server = config.Server;
+            this.Config = config;
 
-            this.Receiver = new ReceiveBuffer(this, config);
-            this.Sender = new FlushSendBuffer(this, config);
+            this.ReceiveBuffer = new ReceiveBuffer(this);
+            if (config.SendImmediately)
+            {
+                this.SendBuffer = new ImmediateSendBuffer(this);
+                this.Socket.SetNoDelay(true);
+            }
+            else
+            {
+                this.SendBuffer = new FlushSendBuffer(this);
+                this.Socket.SetNoDelay(true);
+            }
+
         }
 
-        public void BeginReceive()
+        public void Begin(long timestamp)
         {
-            Receiver.BeginReceive();
+            ReceiveBuffer.Begin(timestamp);
+            SendBuffer.Begin(timestamp);
         }
 
-        private readonly MemoryStream writeBuffer = new MemoryStream();
-
-        public void Flush()
+        public void Send(byte[] bs)
         {
-            if (IsClosed)
+            SendBuffer.Send(bs);
+        }
+
+        public void Send(byte[] bs, int offset, int len)
+        {
+            SendBuffer.Send(bs, offset, len);
+        }
+
+        void IConnection.Close()
+        {
+            Shutdown();
+        }
+
+        private void Shutdown()
+        {
+            if (isShutdown.Exchange(true))
             {
                 return;
             }
-            Socket.Send(writeBuffer.GetBuffer(), 0, (int) writeBuffer.Position, SocketFlags.None);
-            writeBuffer.Seek(0, SeekOrigin.Begin);
+            ReceiveBuffer.Shutdown();
+            SendBuffer.Shutdown();
         }
 
-        public bool IsClosed { get; private set; }
-
-        public void Close()
+        public void Close(ConnectionCloseType type)
         {
-            Close(ConnectionCloseType.Application);
-        }
-
-        internal void Close(ConnectionCloseType type)
-        {
-            IsClosed = true;
+            if (isClosed.Exchange(true))
+            {
+                return;
+            }
+            if (IsShutdown == false)
+            {
+                Shutdown();
+            }
             Socket.Close();
-            server.OnConnectionDisconnected(this, type);
+            Server.OnConnectionDisconnected(this, type);
         }
 
+        public void Update(long timestamp)
+        {
+            if (IsShutdown)
+            {
+                return;
+            }
+            ReceiveBuffer.Update(timestamp);
+            SendBuffer.Update(timestamp);
+        }
     }
 
 }

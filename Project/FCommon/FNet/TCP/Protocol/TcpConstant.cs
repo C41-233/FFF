@@ -1,11 +1,15 @@
-﻿namespace FNet.TCP.Protocol
+﻿using FFF.Base.Util.BitConvert;
+
+namespace FNet.TCP.Protocol
 {
-    public static class TcpConstant
+    internal static class TcpConstant
     {
 
         public const int HeadTypeLength = 1;
 
-        public const int DataLenghtFieldLength = 2;
+        public const int DataLenghFieldLength = 2;
+
+        public static readonly IBitConvert BitConvert = BitConverts.LittleEndian;
 
     }
 }
