@@ -2,10 +2,10 @@
 
 namespace FFF.Base.Util.Atomic
 {
-    public class InterlockedLong : IAtomic<long>
+    public class InterlockedLong : Atomic<long>
     {
 
-        public long Value => value;
+        public override long Value => value;
 
         private long value;
 
@@ -14,12 +14,12 @@ namespace FFF.Base.Util.Atomic
             this.value = value;
         }
 
-        public long Exchange(long value)
+        public override long Exchange(long value)
         {
             return Interlocked.Exchange(ref this.value, value);
         }
 
-        public bool CompareExchange(long value, long comp)
+        public override bool CompareExchange(long value, long comp)
         {
             return Interlocked.CompareExchange(ref this.value, value, comp) == comp;
         }
@@ -32,11 +32,6 @@ namespace FFF.Base.Util.Atomic
         public long Decrement()
         {
             return Interlocked.Decrement(ref this.value);
-        }
-
-        public static implicit operator long(InterlockedLong atomic)
-        {
-            return atomic.value;
         }
 
     }

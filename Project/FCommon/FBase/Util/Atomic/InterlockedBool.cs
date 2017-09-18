@@ -2,7 +2,7 @@
 
 namespace FFF.Base.Util.Atomic
 {
-    public class InterlockedBool : IAtomic<bool>
+    public class InterlockedBool : Atomic<bool>
     {
 
         public InterlockedBool(bool value)
@@ -10,27 +10,22 @@ namespace FFF.Base.Util.Atomic
             this.value = Convert(value);
         }
 
-        public bool Value => Convert(this.value);
+        public override bool Value => Convert(this.value);
 
         private int value;
 
-        public bool Exchange(bool value)
+        public override bool Exchange(bool value)
         {
             var target = Convert(value);
             var old = Interlocked.Exchange(ref this.value, target);
             return Convert(old);
         }
 
-        public bool CompareExchange(bool value, bool compare)
+        public override bool CompareExchange(bool value, bool compare)
         {
             var target = Convert(value);
             var comp = Convert(compare);
             return Interlocked.CompareExchange(ref this.value, target, comp) == comp;
-        }
-
-        public static implicit operator bool(InterlockedBool atomic)
-        {
-            return atomic.Value;
         }
 
         private static int Convert(bool value)

@@ -57,7 +57,7 @@
     <Compile Include="Util\Action.cs" />
     <Compile Include="Util\Atomic\InterlockedBool.cs" />
     <Compile Include="Util\Atomic\InterlockedLong.cs" />
-    <Compile Include="Util\Atomic\IAtomic.cs" />
+    <Compile Include="Util\Atomic\Atomic.cs" />
     <Compile Include="Util\BitConvert\BitConvertBase.cs" />
     <Compile Include="Util\BitConvert\BitConverts.cs" />
     <Compile Include="Util\BitConvert\LittleEndianBitConvert.cs" />
