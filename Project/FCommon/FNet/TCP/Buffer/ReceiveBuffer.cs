@@ -1,10 +1,10 @@
-﻿using FFF.Base.Collection.Buffer;
-using FNet.Network;
-using FNet.TCP.Protocol;
-using System;
+﻿using System;
 using System.Net.Sockets;
+using FFF.Base.Collection.Buffer;
+using FFF.Network.Base;
+using FFF.Network.TCP.Protocol;
 
-namespace FNet.TCP.Buffer
+namespace FFF.Network.TCP.Buffer
 {
 
     internal class ReceiveBuffer
@@ -153,7 +153,7 @@ namespace FNet.TCP.Buffer
         private void ProcessData()
         {
             status = ReceiveStatus.ReadData;
-            var b2 = readBuffer.Pop(2);
+            var b2 = readBuffer.Pop(TcpConstant.DataLenghFieldLength);
             expectLength = TcpConstant.BitConvert.ToUInt16(b2);
 
             if (expectLength > Config.PackageMaxSize)

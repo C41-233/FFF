@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Sockets;
 
-namespace FNet.TCP
+namespace FFF.Network.TCP
 {
     public class TcpSocket
     {

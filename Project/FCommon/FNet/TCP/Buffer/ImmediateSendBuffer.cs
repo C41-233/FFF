@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace FNet.TCP.Buffer
+namespace FFF.Network.TCP.Buffer
 {
     internal class ImmediateSendBuffer : SendBuffer 
     {

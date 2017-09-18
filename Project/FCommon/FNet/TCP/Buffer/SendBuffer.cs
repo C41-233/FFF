@@ -1,4 +1,4 @@
-﻿namespace FNet.TCP.Buffer
+﻿namespace FFF.Network.TCP.Buffer
 {
 
     internal abstract class SendBuffer

@@ -1,4 +1,4 @@
-﻿namespace FNet.Network
+﻿namespace FFF.Network.Base
 {
     public enum ConnectionCloseType : int
     {

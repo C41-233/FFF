@@ -1,8 +1,8 @@
 ﻿using FFF.Base.Util.Atomic;
-using FNet.Network;
-using FNet.TCP.Buffer;
+using FFF.Network.Base;
+using FFF.Network.TCP.Buffer;
 
-namespace FNet.TCP
+namespace FFF.Network.TCP
 {
 
     internal class TcpConnection : IConnection
@@ -19,8 +19,8 @@ namespace FNet.TCP
         public TcpConnectionConfig Config { get; }
 
         public bool IsShutdown => isShutdown;
-        private readonly AtomicBool isClosed = new AtomicBool(false);
-        private readonly AtomicBool isShutdown = new AtomicBool(false);
+        private readonly InterlockedBool isClosed = new InterlockedBool(false);
+        private readonly InterlockedBool isShutdown = new InterlockedBool(false);
 
         public TcpConnection(TcpSocket socket, TcpConnectionConfig config)
         {

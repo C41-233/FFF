@@ -1,6 +1,6 @@
 ﻿using FFF.Base.Util;
 
-namespace FNet.Network
+namespace FFF.Network.Base
 {
     public interface IServer
     {

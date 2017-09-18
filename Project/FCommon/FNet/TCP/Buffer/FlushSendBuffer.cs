@@ -1,10 +1,10 @@
-using FNet.Network;
-using FNet.TCP.Protocol;
 using System;
 using System.IO;
 using System.Net.Sockets;
+using FFF.Network.Base;
+using FFF.Network.TCP.Protocol;
 
-namespace FNet.TCP.Buffer
+namespace FFF.Network.TCP.Buffer
 {
     internal class FlushSendBuffer : SendBuffer
     {

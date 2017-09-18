@@ -1,6 +1,6 @@
 ﻿using FFF.Base.Util.BitConvert;
 
-namespace FNet.TCP.Protocol
+namespace FFF.Network.TCP.Protocol
 {
     internal static class TcpConstant
     {

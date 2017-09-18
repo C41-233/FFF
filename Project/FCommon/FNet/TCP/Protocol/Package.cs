@@ -1,4 +1,4 @@
-﻿namespace FNet.TCP.Protocol
+﻿namespace FFF.Network.TCP.Protocol
 {
 
     public class TcpPingPackage

@@ -1,14 +1,14 @@
-﻿using FFF.Base.Time;
-using FFF.Base.Util;
-using FNet.Network;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using FFF.Base.Time;
+using FFF.Base.Util;
+using FFF.Network.Base;
 
-namespace FNet.TCP
+namespace FFF.Network.TCP
 {
     public class TcpServer : IServer
     {

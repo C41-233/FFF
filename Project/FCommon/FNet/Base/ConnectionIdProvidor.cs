@@ -1,6 +1,6 @@
 ﻿using FFF.Base.Util.Generator;
 
-namespace FNet.Network
+namespace FFF.Network.Base
 {
     internal static class ConnectionIdProvidor
     {

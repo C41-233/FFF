@@ -1,4 +1,4 @@
-﻿namespace FNet.TCP.Protocol
+﻿namespace FFF.Network.TCP.Protocol
 {
 
     public enum PackageType : byte

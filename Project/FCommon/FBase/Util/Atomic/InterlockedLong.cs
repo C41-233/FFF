@@ -2,14 +2,14 @@
 
 namespace FFF.Base.Util.Atomic
 {
-    public class AtomicLong
+    public class InterlockedLong : IAtomic<long>
     {
 
         public long Value => value;
 
         private long value;
 
-        public AtomicLong(long value)
+        public InterlockedLong(long value)
         {
             this.value = value;
         }
@@ -34,7 +34,7 @@ namespace FFF.Base.Util.Atomic
             return Interlocked.Decrement(ref this.value);
         }
 
-        public static implicit operator long(AtomicLong atomic)
+        public static implicit operator long(InterlockedLong atomic)
         {
             return atomic.value;
         }

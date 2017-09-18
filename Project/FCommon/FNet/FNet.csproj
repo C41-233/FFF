@@ -7,7 +7,7 @@
     <ProjectGuid>{193CE2DE-3545-4087-9EF2-0419117F2983}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FNet</RootNamespace>
+    <RootNamespace>FFF.Network</RootNamespace>
     <AssemblyName>FNet</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -42,10 +42,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Network\ConnectionCloseType.cs" />
-    <Compile Include="Network\ConnectionIdProvidor.cs" />
-    <Compile Include="Network\IConnection.cs" />
-    <Compile Include="Network\IServer.cs" />
+    <Compile Include="Base\ConnectionCloseType.cs" />
+    <Compile Include="Base\ConnectionIdProvidor.cs" />
+    <Compile Include="Base\IConnection.cs" />
+    <Compile Include="Base\IServer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TCP\Buffer\FlushSendBuffer.cs" />
     <Compile Include="TCP\Buffer\ImmediateSendBuffer.cs" />
