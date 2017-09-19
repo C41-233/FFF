@@ -1,6 +1,7 @@
 ﻿using FFF.Server.Application;
 using System;
 using System.Text;
+using FFF.Base.Collection.PriorityQueue;
 using FFF.Network.Base;
 using FFF.Network.TCP;
 
@@ -49,6 +50,9 @@ namespace Main
                 conn.Send(Encoding.Default.GetBytes("reply "+rec));
             };
             server.BeginAccept();
+
+            var queue = new PriorityQueue<int>();
+            queue.Add(10);
         }
 
         void IApplication.OnDestroy()

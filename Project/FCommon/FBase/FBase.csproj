@@ -46,6 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collection\Buffer\MemoryBuffer.cs" />
+    <Compile Include="Collection\PriorityQueue\IPriorityQueue.cs" />
+    <Compile Include="Collection\PriorityQueue\PriorityQueue.cs" />
     <Compile Include="Linq\EnumerableExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Time\FDateTime.cs" />
