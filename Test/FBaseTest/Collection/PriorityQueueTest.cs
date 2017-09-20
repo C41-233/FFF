@@ -1,4 +1,5 @@
 ﻿using FFF.Base.Collection.PriorityQueue;
+using FFF.Base.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
@@ -10,7 +11,8 @@ namespace FFFUnitTest.Base.Collection
         [TestMethod]
         public void TestMethod1()
         {
-            var queue = new PriorityQueue<int> {1, 2, 3, 4, 3, 2, 1};
+            var queue = new PriorityQueue<int>();
+            queue.Add(1, 2, 3, 4, 3, 2, 1);
             Assert.AreEqual(7, queue.Count);
             Assert.AreEqual(1, queue.First);
             Assert.AreEqual(1, queue.RemoveFirst());
@@ -50,7 +52,8 @@ namespace FFFUnitTest.Base.Collection
         [TestMethod]
         public void TestMethod3()
         {
-            var queue = new PriorityQueue<int>(){ 15, 16 };
+            var queue = new PriorityQueue<int>();
+            queue.Add(15, 16);
             Assert.AreEqual(2, queue.Count);
             Assert.AreEqual(15, queue.First);
 
@@ -92,7 +95,8 @@ namespace FFFUnitTest.Base.Collection
         [TestMethod]
         public void TestMethod4()
         {
-            var queue = new PriorityQueue<int>() {1,5,43,3,999,-11};
+            var queue = new PriorityQueue<int>();
+            queue.Add(1,5,43,3,999,-11);
             var node = queue.FirstNode;
             Assert.AreEqual(-11, node.Value);
             node++;
@@ -102,5 +106,22 @@ namespace FFFUnitTest.Base.Collection
             Assert.AreEqual(1, queue.First);
         }
 
+        [TestMethod]
+        public void TestMethod5()
+        {
+            var queue = new PriorityQueue<int>();
+            foreach (var i in F.For(100000))
+            {
+                queue.Add(i);
+            }
+            Assert.AreEqual(100000, queue.Count);
+            Assert.AreEqual(0, queue.First);
+
+            foreach (var unused in F.For(100000))
+            {
+                queue.RemoveFirst();
+            }
+            Assert.AreEqual(0, queue.Count);
+        }
     }
 }

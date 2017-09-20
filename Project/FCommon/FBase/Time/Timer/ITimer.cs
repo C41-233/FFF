@@ -4,6 +4,10 @@
     public interface ITimer
     {
 
+        long Timeout { get; }
+
+        long Remain { get; }
+
         void Stop();
 
     }

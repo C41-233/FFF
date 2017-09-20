@@ -1,62 +1,136 @@
-﻿using System;
+﻿using FFF.Base.Collection.PriorityQueue;
+using FFF.Base.Linq;
 using FFF.Base.Util;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FFF.Base.Time.Timer
 {
     public class TimerManager
     {
 
-        private readonly SortedList<long, TimerHandle> timers = new SortedList<long, TimerHandle>();
+        private readonly Dictionary<long, PriorityQueue<TimerHandle>> timers = new Dictionary<long, PriorityQueue<TimerHandle>>();
 
-        private long now;
+        private readonly long robinTime;
+
+        private long now = -1;
+
+        public TimerManager()
+            : this(1000)
+        {
+        }
+
+        /// <summary>
+        /// 创建TimerManager实例
+        /// </summary>
+        /// <param name="roundTime">每roundTime为一组</param>
+        public TimerManager(long roundTime)
+        {
+            if (roundTime <= 0)
+            {
+                throw new ArgumentException($"{nameof(roundTime)}={roundTime}");
+            }
+            this.robinTime = roundTime;
+        }
 
         public ITimer StartTimer(long timestamp, FAction callback)
         {
             var timer = new TimerHandle(this, timestamp, callback);
-            timers.Add(timestamp, timer);
+
+            var id = timestamp / robinTime;
+
+            var queue = timers.GetValueOrAdd(id);
+            queue.Add(timer);
             return timer;
         }
 
         public void Update(long timestamp)
         {
+            if (now < 0)
+            {
+                now = timestamp;
+            }
+
+            var lastId = now / robinTime;
+            var thisId = timestamp / robinTime;
+
             this.now = timestamp;
 
-            while (timers.Count > 0)
+            //处理已过期定时器
+            for(var id = lastId; id < thisId; id++)
             {
-                var timer = timers.First().Value;
-                if (timer.IsStopped)
+                if (timers.TryGetValue(id, out PriorityQueue<TimerHandle> queue))
                 {
-                    timers.RemoveAt(0);
-                    continue;
+                    while (queue.Count > 0)
+                    {
+                        var timer = queue.First;
+                        if (timer.IsStopped)
+                        {
+                            queue.RemoveFirst();
+                            continue;
+                        }
+
+                        timer.Stop();
+                        try
+                        {
+                            timer.Callback();
+                        }
+                        catch (Exception e)
+                        {
+                            OnException(timer, e);
+                        }
+                        queue.RemoveFirst();
+                    }
+                    timers.Remove(id);
                 }
-                if (timer.Remain == 0)
+            }
+            {
+                if (timers.TryGetValue(thisId, out PriorityQueue<TimerHandle> queue))
                 {
-                    timers.RemoveAt(0);
-                    try
+                    while (queue.Count > 0)
                     {
-                        timer.Callback();
+                        var timer = queue.First;
+                        if (timer.IsStopped)
+                        {
+                            queue.RemoveFirst();
+                            continue;
+                        }
+                        if (timer.Remain == 0)
+                        {
+                            timer.Stop();
+                            try
+                            {
+                                timer.Callback();
+                            }
+                            catch (Exception e)
+                            {
+                                OnException(timer, e);
+                            }
+                            queue.RemoveFirst();
+                            continue;
+                        }
+                        break;
                     }
-                    catch (Exception)
-                    {
-                        //todo 异常处理
-                    }
-                    continue;
                 }
-                break;
             }
         }
 
-        private class TimerHandle : ITimer
+        private void OnException(TimerHandle timer, Exception e)
+        {
+            //todo
+            if (timer == null) throw new ArgumentNullException(nameof(timer));
+            if (e == null) throw new ArgumentNullException(nameof(e));
+        }
+
+        private class TimerHandle : ITimer, IComparable<TimerHandle>
         {
 
             private readonly TimerManager manager;
 
-            private readonly long timestamp;
-
             public FAction Callback { get; }
             public bool IsStopped { get; private set; }
+
+            public long Timeout { get; }
 
             public long Remain
             {
@@ -66,7 +140,7 @@ namespace FFF.Base.Time.Timer
                     {
                         return 0;
                     }
-                    var remain = timestamp - manager.now;
+                    var remain = Timeout - manager.now;
                     return remain < 0 ? 0 : remain;
                 }
             }
@@ -74,7 +148,7 @@ namespace FFF.Base.Time.Timer
             public TimerHandle(TimerManager manager, long timestamp, FAction callback)
             {
                 this.manager = manager;
-                this.timestamp = timestamp;
+                this.Timeout = timestamp;
                 this.Callback = callback;
             }
 
@@ -83,7 +157,18 @@ namespace FFF.Base.Time.Timer
                 this.IsStopped = true;
             }
 
+            public int CompareTo(TimerHandle other)
+            {
+                if (this.Timeout == other.Timeout)
+                {
+                    return 0;
+                }
+                if (this.Timeout < other.Timeout)
+                {
+                    return -1;
+                }
+                return 1;
+            }
         }
     }
-
 }

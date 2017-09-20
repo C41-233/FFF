@@ -1,9 +1,9 @@
-﻿using FFF.Server.Application;
+﻿using FFF.Network.Base;
+using FFF.Network.TCP;
+using FFF.Server.Application;
+using FFF.Server.Application.Tick;
 using System;
 using System.Text;
-using FFF.Base.Collection.PriorityQueue;
-using FFF.Network.Base;
-using FFF.Network.TCP;
 
 namespace Main
 {
@@ -51,8 +51,19 @@ namespace Main
             };
             server.BeginAccept();
 
-            var queue = new PriorityQueue<int>();
-            queue.Add(10);
+            Console.WriteLine("start");
+            Timers.StartTimer(5000, () =>
+            {
+                Console.WriteLine($"5000: {TimeTick.MillisecondsFromStart}");
+            });
+            Timers.StartTimer(4999, () =>
+            {
+                Console.WriteLine($"4999 {TimeTick.MillisecondsFromStart}");
+            });
+            Timers.StartTimer(5001, () =>
+            {
+                Console.WriteLine($"5001: {TimeTick.MillisecondsFromStart}");
+            });
         }
 
         void IApplication.OnDestroy()
@@ -61,7 +72,6 @@ namespace Main
 
         void IApplication.OnTick()
         {
-            server.Update();
         }
 
     }

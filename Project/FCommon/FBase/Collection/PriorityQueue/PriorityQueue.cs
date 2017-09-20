@@ -1,10 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace FFF.Base.Collection.PriorityQueue
 {
-    public class PriorityQueue<T> : IPriorityQueue<T>, IEnumerable<T>
+    public class PriorityQueue<T> : IPriorityQueue<T>
     {
 
         public int Count { get; private set; }
@@ -126,22 +125,20 @@ namespace FFF.Base.Collection.PriorityQueue
             return comparer.Compare(a.Value, b.Value) < 0;
         }
 
-        public IEnumerator<T> GetEnumerator()
+        public IEnumerator<T> Values
         {
-            int snapshot = version;
-            for (var i = 1; i <= Count; i++)
+            get
             {
-                yield return buffer[i].Value;
-                if (snapshot != version)
+                int snapshot = version;
+                for (var i = 1; i <= Count; i++)
                 {
-                    throw new InvalidOperationException();
+                    yield return buffer[i].Value;
+                    if (snapshot != version)
+                    {
+                        throw new InvalidOperationException();
+                    }
                 }
             }
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         private class ValueNodeList
@@ -158,7 +155,7 @@ namespace FFF.Base.Collection.PriorityQueue
 
             public void TryAddAdjust(int Count)
             {
-                if (Count - 1 == buffer.Length)
+                if (Count+1 == buffer.Length)
                 {
                     Resize(buffer.Length * 2);
                 }
@@ -166,7 +163,7 @@ namespace FFF.Base.Collection.PriorityQueue
 
             public void TryRemoveAjust(int Count)
             {
-                if (buffer.Length >= DefaultSize * 2 && Count - 1 < buffer.Length / 4)
+                if (buffer.Length >= DefaultSize * 2 && Count < buffer.Length / 4)
                 {
                     Resize(buffer.Length / 2);
                 }

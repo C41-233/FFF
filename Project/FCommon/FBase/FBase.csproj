@@ -48,11 +48,13 @@
     <Compile Include="Collection\Buffer\MemoryBuffer.cs" />
     <Compile Include="Collection\PriorityQueue\IPriorityQueue.cs" />
     <Compile Include="Collection\PriorityQueue\PriorityQueue.cs" />
+    <Compile Include="Linq\DictionaryExtension.cs" />
     <Compile Include="Linq\EnumerableExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Time\FDateTime.cs" />
     <Compile Include="Time\DateTimeExtension.cs" />
     <Compile Include="Time\Timer\ITimer.cs" />
+    <Compile Include="Time\Timer\TimerException.cs" />
     <Compile Include="Time\Timer\TimerManager.cs" />
     <Compile Include="Time\TimeUnit.cs" />
     <Compile Include="Linq\F.cs" />
