@@ -5,7 +5,6 @@ using System.Collections.Generic;
 namespace FFF.Base.Collection.PriorityQueue
 {
     public class PriorityQueue<T> : IPriorityQueue<T>, IEnumerable<T>
-        where T : struct
     {
 
         public int Count { get; private set; }
@@ -190,11 +189,44 @@ namespace FFF.Base.Collection.PriorityQueue
 
         public abstract class Node
         {
-
+            /// <summary>
+            /// set: 获取结点的值
+            /// get: 设置当前结点的值，会触发重排序
+            /// </summary>
             public abstract T Value { get; set; }
 
+            /// <summary>
+            /// 从优先队列中删除当前结点，此后不再可以操作当前结点
+            /// </summary>
             public abstract void Remove();
 
+            /// <summary>
+            /// 提示当前结点的值出现增加，需要重排序
+            /// </summary>
+            public abstract void ValueUp();
+
+            /// <summary>
+            /// 提示当前结点的值出现减少，需要重排序
+            /// </summary>
+            public abstract void ValueDown();
+
+            /// <summary>
+            /// 同ValueUp
+            /// </summary>
+            public static Node operator ++(Node node)
+            {
+                node.ValueUp();
+                return node;
+            }
+            
+            /// <summary>
+            /// 同ValueDown
+            /// </summary>
+            public static Node operator --(Node node)
+            {
+                node.ValueDown();
+                return node;
+            }
         }
 
         private class ValueNode: Node
@@ -235,13 +267,31 @@ namespace FFF.Base.Collection.PriorityQueue
                     }
                     if (comp < 0)
                     {
-                        queue.ShiftUp(index);
+                        ValueDown();
                     }
                     else
                     {
-                        queue.ShiftDown(index);
+                        ValueUp();
                     }
                 }
+            }
+
+            public override void ValueUp()
+            {
+                if (queue == null)
+                {
+                    throw new InvalidOperationException();
+                }
+                queue.ShiftDown(index);
+            }
+
+            public override void ValueDown()
+            {
+                if (queue == null)
+                {
+                    throw new InvalidOperationException();
+                }
+                queue.ShiftUp(index);
             }
 
             private T value;

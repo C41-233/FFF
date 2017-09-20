@@ -88,5 +88,19 @@ namespace FFFUnitTest.Base.Collection
             Assert.ThrowsException<InvalidOperationException>(() => node.Remove() );
             Assert.AreEqual(17, queue.First);
         }
+
+        [TestMethod]
+        public void TestMethod4()
+        {
+            var queue = new PriorityQueue<int>() {1,5,43,3,999,-11};
+            var node = queue.FirstNode;
+            Assert.AreEqual(-11, node.Value);
+            node++;
+            Assert.AreEqual(-11, queue.First);
+
+            node.Remove();
+            Assert.AreEqual(1, queue.First);
+        }
+
     }
 }
