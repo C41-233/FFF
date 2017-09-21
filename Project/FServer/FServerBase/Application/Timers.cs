@@ -1,4 +1,5 @@
-﻿using FFF.Base.Time;
+﻿using System;
+using FFF.Base.Time;
 using FFF.Base.Time.Timer;
 using FFF.Base.Util;
 using FFF.Server.Application.Tick;
@@ -34,9 +35,14 @@ namespace FFF.Server.Application
             return manager.StartTimer(dt.TimeStamp, callback);
         }
 
-        internal static void OnTick(long now)
+        internal static void OnInit()
         {
-            manager.Update(now);
+            manager.Update(TimeTick.Now.TimeStamp);
+        }
+
+        internal static void OnTick()
+        {
+            manager.Update(TimeTick.Now.TimeStamp);
         }
 
     }

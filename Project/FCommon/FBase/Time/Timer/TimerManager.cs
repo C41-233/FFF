@@ -9,6 +9,8 @@ namespace FFF.Base.Time.Timer
     public class TimerManager
     {
 
+        public event Action<ITimer, Exception> OnException;
+
         private readonly Dictionary<long, PriorityQueue<TimerHandle>> timers = new Dictionary<long, PriorityQueue<TimerHandle>>();
 
         private readonly long robinTime;
@@ -35,6 +37,14 @@ namespace FFF.Base.Time.Timer
 
         public ITimer StartTimer(long timestamp, FAction callback)
         {
+            if (now < 0)
+            {
+                throw new TimerException("StartTimer before first update.");   
+            }
+            if (timestamp < now)
+            {
+                throw new TimerException("Timer timeout before now.");
+            }
             var timer = new TimerHandle(this, timestamp, callback);
 
             var id = timestamp / robinTime;
@@ -77,7 +87,7 @@ namespace FFF.Base.Time.Timer
                         }
                         catch (Exception e)
                         {
-                            OnException(timer, e);
+                            OnException?.Invoke(timer, e);
                         }
                         queue.RemoveFirst();
                     }
@@ -85,6 +95,7 @@ namespace FFF.Base.Time.Timer
                 }
             }
             {
+                //处理当前帧定时器
                 if (timers.TryGetValue(thisId, out PriorityQueue<TimerHandle> queue))
                 {
                     while (queue.Count > 0)
@@ -104,7 +115,7 @@ namespace FFF.Base.Time.Timer
                             }
                             catch (Exception e)
                             {
-                                OnException(timer, e);
+                                OnException?.Invoke(timer, e);
                             }
                             queue.RemoveFirst();
                             continue;
@@ -115,13 +126,7 @@ namespace FFF.Base.Time.Timer
             }
         }
 
-        private void OnException(TimerHandle timer, Exception e)
-        {
-            //todo
-            if (timer == null) throw new ArgumentNullException(nameof(timer));
-            if (e == null) throw new ArgumentNullException(nameof(e));
-        }
-
+        //todo 可以提供更多属性，name、start等
         private class TimerHandle : ITimer, IComparable<TimerHandle>
         {
 

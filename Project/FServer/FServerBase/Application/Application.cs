@@ -20,6 +20,8 @@ namespace FFF.Server.Application
 
             var timeFrame = new TimeFrame(config.TickReal, config.TickLogic);
 
+            Timers.OnInit();
+
             app.OnInit(args);
             while (true)
             {
@@ -36,8 +38,8 @@ namespace FFF.Server.Application
                     break;
                 }
 
-                Timers.OnTick(TimeTick.Now.TimeStamp);
-                Coroutines.OnTick(TimeTick.Now.TimeStamp);
+                Timers.OnTick();
+                Coroutines.OnTick();
             }
             app.OnDestroy();
         }

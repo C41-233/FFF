@@ -4,6 +4,9 @@ using FFF.Server.Application;
 using FFF.Server.Application.Tick;
 using System;
 using System.Text;
+using FFF.Base.Collection.PriorityQueue;
+using FFF.Base.Linq;
+using FFF.Base.Time;
 
 namespace Main
 {
@@ -26,43 +29,11 @@ namespace Main
 
         void IApplication.OnInit(string[] args)
         {
-            var config = new TcpServerConfig()
-            {
-                IpAsString = "127.0.0.1",
-                MaxConnection = 1,
-                KeepAlive = 5000,
-            };
-            this.server = new TcpServer(config);
-            server.OnClientConnected += conn =>
-            {
-                Console.WriteLine("connected");
-                conn.Send(Encoding.Default.GetBytes("hello"));
-                //Coroutines.StartCoroutineAfter(5000, conn.Close);
-            };
-            server.OnClientDisconnected += (conn, err) =>
-            {
-                Console.WriteLine("disconnected err="+err);
-            };
-            server.OnClientReceive += (conn, data) =>
-            {
-                var rec = Encoding.Default.GetString(data);
-                Console.WriteLine("receive " + rec);
-                conn.Send(Encoding.Default.GetBytes("reply "+rec));
-            };
-            server.BeginAccept();
-
             Console.WriteLine("start");
             Timers.StartTimer(5000, () =>
             {
-                Console.WriteLine($"5000: {TimeTick.MillisecondsFromStart}");
-            });
-            Timers.StartTimer(4999, () =>
-            {
-                Console.WriteLine($"4999 {TimeTick.MillisecondsFromStart}");
-            });
-            Timers.StartTimer(5001, () =>
-            {
-                Console.WriteLine($"5001: {TimeTick.MillisecondsFromStart}");
+                Console.WriteLine($"{TimeTick.MillisecondsFromStartReal}");
+                Console.WriteLine($"{TimeTick.MillisecondsFromStart}");
             });
         }
 

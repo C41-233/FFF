@@ -6,7 +6,7 @@ using System;
 namespace FFFUnitTest.Base.Collection
 {
     [TestClass]
-    public class PriorityQueueTest
+    public class PriorityQueueTest1
     {
         [TestMethod]
         public void TestMethod1()

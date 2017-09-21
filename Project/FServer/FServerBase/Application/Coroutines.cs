@@ -2,6 +2,7 @@
 using FFF.Base.Util;
 using FFF.Base.Util.Coroutine;
 using FFF.Base.Util.Coroutine.Yield;
+using FFF.Server.Application.Tick;
 
 namespace FFF.Server.Application
 {
@@ -71,9 +72,9 @@ namespace FFF.Server.Application
             }
         }
 
-        internal static void OnTick(long now)
+        internal static void OnTick()
         {
-            manager.Update(now);
+            manager.Update(TimeTick.Now.TimeStamp);
         }
 
     }

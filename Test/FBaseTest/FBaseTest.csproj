@@ -51,10 +51,9 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Collection\PriorityQueueTest.cs" />
-    <Compile Include="Collection\PriorityQueueTestTime.cs" />
+    <Compile Include="Collection\PriorityQueueTest1.cs" />
+    <Compile Include="Collection\PriorityQueueTest2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Timer\TimerTestTime.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

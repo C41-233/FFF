@@ -10,11 +10,25 @@ namespace FFF.Base.Linq
             return dic.TryGetValue(key, out V value) ? value : default(V);
         }
 
+        public static V GetValueOrDefault<K, V>(this IDictionary<K, V> dic, K key, V defaultValue)
+        {
+            return dic.TryGetValue(key, out V value) ? value : defaultValue;
+        }
+
         public static V GetValueOrAddDefault<K, V>(this IDictionary<K, V> dic, K key)
         {
             if (!dic.TryGetValue(key, out V value))
             {
                 value = dic[key] = default(V);
+            }
+            return value;
+        }
+
+        public static V GetValueOrAdd<K, V>(this IDictionary<K, V> dic, K key, V defaultValue)
+        {
+            if (!dic.TryGetValue(key, out V value))
+            {
+                value = dic[key] = defaultValue;
             }
             return value;
         }
