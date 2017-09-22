@@ -1,6 +1,6 @@
 ﻿namespace FFF.Base.Util.Coroutine.Yield
 {
-    public class WaitForCoroutine : ICoroutineYield
+    public class WaitForCoroutine : ICoroutineEventYield
     {
 
         private readonly ICoroutine coroutine;

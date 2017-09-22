@@ -2,14 +2,14 @@
 
 namespace FFF.Base.Util.Coroutine.Yield
 {
-    public class WaitForAny : ICoroutineYield
+    public class WaitForAny : ICoroutineEventYield
     {
 
-        private readonly ICoroutineYield[] args;
+        private readonly ICoroutineEventYield[] args;
 
         public bool IsYield => args.Exists(arg => arg.IsYield==false);
 
-        public WaitForAny(params ICoroutineYield[] args)
+        public WaitForAny(params ICoroutineEventYield[] args)
         {
             this.args = args;
         }

@@ -1,12 +1,9 @@
-﻿using FFF.Network.Base;
-using FFF.Network.TCP;
+﻿using FFF.Base.Util.Coroutine.Yield;
+using FFF.Network.Base;
 using FFF.Server.Application;
 using FFF.Server.Application.Tick;
 using System;
-using System.Text;
-using FFF.Base.Collection.PriorityQueue;
-using FFF.Base.Linq;
-using FFF.Base.Time;
+using System.Collections;
 
 namespace Main
 {
@@ -30,11 +27,21 @@ namespace Main
         void IApplication.OnInit(string[] args)
         {
             Console.WriteLine("start");
-            Timers.StartTimer(5000, () =>
+            Coroutines.StartCoroutine(Do);
+            Coroutines.OnException += (c, e) =>
             {
-                Console.WriteLine($"{TimeTick.MillisecondsFromStartReal}");
-                Console.WriteLine($"{TimeTick.MillisecondsFromStart}");
-            });
+                Console.WriteLine("fuck");
+            };
+        }
+
+        IEnumerator Do()
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(1);
+                Console.WriteLine(TimeTick.MillisecondsFromStart);
+            }
+
         }
 
         void IApplication.OnDestroy()

@@ -4,9 +4,13 @@
     public interface ITimer
     {
 
-        long Timeout { get; }
+        long StartTime { get; }
 
-        long Remain { get; }
+        long TimeoutTime { get; }
+
+        long RemainTime { get; }
+
+        string Name { get; set; }
 
         void Stop();
 

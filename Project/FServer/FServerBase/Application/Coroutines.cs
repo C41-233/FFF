@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using FFF.Base.Util;
 using FFF.Base.Util.Coroutine;
 using FFF.Base.Util.Coroutine.Yield;
@@ -17,7 +18,17 @@ namespace FFF.Server.Application
     public static class Coroutines
     {
 
+        public static event FAction<ICoroutine, Exception> OnException;
+
         private static readonly CoroutineManager manager = new CoroutineManager();
+
+        static Coroutines()
+        {
+            manager.OnException += (c, e) =>
+            {
+                OnException?.Invoke(c, e);
+            };
+        }
 
         public static ICoroutine StartCoroutine(IEnumerator coroutine)
         {

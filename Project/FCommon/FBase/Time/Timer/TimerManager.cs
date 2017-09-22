@@ -54,6 +54,10 @@ namespace FFF.Base.Time.Timer
             return timer;
         }
 
+        /// <summary>
+        /// Timer更新帧，必须在添加任何Timer之前进行第一次Update
+        /// </summary>
+        /// <param name="timestamp">当前时间</param>
         public void Update(long timestamp)
         {
             if (now < 0)
@@ -106,7 +110,7 @@ namespace FFF.Base.Time.Timer
                             queue.RemoveFirst();
                             continue;
                         }
-                        if (timer.Remain == 0)
+                        if (timer.RemainTime == 0)
                         {
                             timer.Stop();
                             try
@@ -126,7 +130,6 @@ namespace FFF.Base.Time.Timer
             }
         }
 
-        //todo 可以提供更多属性，name、start等
         private class TimerHandle : ITimer, IComparable<TimerHandle>
         {
 
@@ -134,10 +137,11 @@ namespace FFF.Base.Time.Timer
 
             public FAction Callback { get; }
             public bool IsStopped { get; private set; }
+            public string Name { get; set; }
 
-            public long Timeout { get; }
-
-            public long Remain
+            public long StartTime { get; }
+            public long TimeoutTime { get; }
+            public long RemainTime
             {
                 get
                 {
@@ -145,7 +149,7 @@ namespace FFF.Base.Time.Timer
                     {
                         return 0;
                     }
-                    var remain = Timeout - manager.now;
+                    var remain = TimeoutTime - manager.now;
                     return remain < 0 ? 0 : remain;
                 }
             }
@@ -153,8 +157,9 @@ namespace FFF.Base.Time.Timer
             public TimerHandle(TimerManager manager, long timestamp, FAction callback)
             {
                 this.manager = manager;
-                this.Timeout = timestamp;
+                this.TimeoutTime = timestamp;
                 this.Callback = callback;
+                this.StartTime = manager.now;
             }
 
             public void Stop()
@@ -164,11 +169,11 @@ namespace FFF.Base.Time.Timer
 
             public int CompareTo(TimerHandle other)
             {
-                if (this.Timeout == other.Timeout)
+                if (this.TimeoutTime == other.TimeoutTime)
                 {
                     return 0;
                 }
-                if (this.Timeout < other.Timeout)
+                if (this.TimeoutTime < other.TimeoutTime)
                 {
                     return -1;
                 }

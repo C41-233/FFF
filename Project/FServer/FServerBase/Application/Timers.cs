@@ -1,5 +1,4 @@
-﻿using System;
-using FFF.Base.Time;
+﻿using FFF.Base.Time;
 using FFF.Base.Time.Timer;
 using FFF.Base.Util;
 using FFF.Server.Application.Tick;
@@ -17,22 +16,25 @@ namespace FFF.Server.Application
 
         private static readonly TimerManager manager = new TimerManager();
 
-        public static ITimer StartTimer(long milliseconds, FAction callback)
+        public static ITimer StartTimer(long milliseconds, FAction callback, string name = null)
         {
-            return manager.StartTimer(
+            return StartTimerTimeoutAt(
                 TimeTick.NowReal.TimeStamp + milliseconds,
-                callback
+                callback,
+                name
             );
         }
 
-        public static ITimer StartTimerTimeoutAt(long timestamp, FAction callback)
+        public static ITimer StartTimerTimeoutAt(long timestamp, FAction callback, string name = null)
         {
-            return manager.StartTimer(timestamp, callback);
+            var timer = manager.StartTimer(timestamp, callback);
+            timer.Name = name;
+            return timer;
         }
 
-        public static ITimer StartTimerTimeoutAt(FDateTime dt, FAction callback)
+        public static ITimer StartTimerTimeoutAt(FDateTime dt, FAction callback, string name = null)
         {
-            return manager.StartTimer(dt.TimeStamp, callback);
+            return StartTimerTimeoutAt(dt.TimeStamp, callback, name);
         }
 
         internal static void OnInit()

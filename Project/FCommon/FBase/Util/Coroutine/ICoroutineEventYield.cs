@@ -1,7 +1,7 @@
 ﻿namespace FFF.Base.Util.Coroutine
 {
 
-    public interface ICoroutineYield
+    public interface ICoroutineEventYield
     {
 
         bool IsYield { get; }
