@@ -30,19 +30,21 @@ namespace FFF.Server.Application
             };
         }
 
-        public static ICoroutine StartCoroutine(IEnumerator coroutine)
+        public static ICoroutine StartCoroutine(IEnumerator coroutine, string name = null)
         {
-            return manager.StartCoroutine(coroutine);
+            var rst = manager.StartCoroutine(coroutine);
+            rst.Name = name;
+            return rst;
         }
 
-        public static ICoroutine StartCoroutine(FFunc<IEnumerator> coroutine)
+        public static ICoroutine StartCoroutine(FFunc<IEnumerator> coroutine, string name = null)
         {
-            return StartCoroutine(coroutine());
+            return StartCoroutine(coroutine(), name);
         }
 
-        public static ICoroutine StartCoroutineAfter(long milliseconds, FAction coroutine)
+        public static ICoroutine StartCoroutineAfter(long milliseconds, FAction coroutine, string name = null)
         {
-            return StartCoroutine(AsCoroutineAfter(milliseconds, coroutine));
+            return StartCoroutine(AsCoroutineAfter(milliseconds, coroutine), name);
         }
 
         public static IEnumerator AsCoroutineAfter(long milliseconds, FAction coroutine)
@@ -51,14 +53,14 @@ namespace FFF.Server.Application
             coroutine();
         }
 
-        public static ICoroutine StartCoroutineEvery(long milliseconds, FAction coroutine)
+        public static ICoroutine StartCoroutineEvery(long milliseconds, FAction coroutine, string name = null)
         {
-            return StartCoroutine(AsCoroutineEvery(milliseconds, coroutine));
+            return StartCoroutine(AsCoroutineEvery(milliseconds, coroutine), name);
         }
 
-        public static ICoroutine StartCoroutineEvery(long milliseconds, FFunc<bool> coroutine)
+        public static ICoroutine StartCoroutineEvery(long milliseconds, FFunc<bool> coroutine, string name = null)
         {
-            return StartCoroutine(AsCoroutineEvery(milliseconds, coroutine));
+            return StartCoroutine(AsCoroutineEvery(milliseconds, coroutine), name);
         }
 
         public static IEnumerator AsCoroutineEvery(long milliseconds, FAction coroutine)

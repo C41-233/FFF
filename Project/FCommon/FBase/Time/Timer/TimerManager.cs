@@ -91,7 +91,7 @@ namespace FFF.Base.Time.Timer
                         }
                         catch (Exception e)
                         {
-                            OnException?.Invoke(timer, e);
+                            ProcessException(timer, e);
                         }
                         queue.RemoveFirst();
                     }
@@ -119,7 +119,7 @@ namespace FFF.Base.Time.Timer
                             }
                             catch (Exception e)
                             {
-                                OnException?.Invoke(timer, e);
+                                ProcessException(timer, e);
                             }
                             queue.RemoveFirst();
                             continue;
@@ -127,6 +127,18 @@ namespace FFF.Base.Time.Timer
                         break;
                     }
                 }
+            }
+        }
+
+        private void ProcessException(ITimer timer, Exception e)
+        {
+            try
+            {
+                OnException?.Invoke(timer, e);
+            }
+            catch (Exception)
+            {
+                //todo 处理异常
             }
         }
 

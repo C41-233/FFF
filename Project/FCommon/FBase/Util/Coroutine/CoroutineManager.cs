@@ -1,8 +1,8 @@
-﻿using FFF.Base.Util.Coroutine.Yield;
+﻿using FFF.Base.Time.Timer;
+using FFF.Base.Util.Coroutine.Yield;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using FFF.Base.Time.Timer;
 
 namespace FFF.Base.Util.Coroutine
 {
@@ -92,7 +92,14 @@ namespace FFF.Base.Util.Coroutine
             catch (Exception e)
             {
                 context.IsDisposed = true;
-                OnException?.Invoke(context.Handle, e);
+                try
+                {
+                    OnException?.Invoke(context.Handle, e);
+                }
+                catch (Exception)
+                {
+                    //todo 处理异常     
+                }
                 return;
             }
 
@@ -167,6 +174,7 @@ namespace FFF.Base.Util.Coroutine
         public bool IsDone { get; set; } = false;
         public bool IsSuspended { get; private set; } = false;
 
+        public string Name { get; set; }
         public FAction Callback { get; set; }
 
         public void Suspend()
