@@ -1,30 +1,54 @@
 ﻿using FFF.Base.Linq;
+using System;
 using System.IO;
 
 namespace FFF.Base.Util.Coroutine.Yield
 {
-    internal class WaitForRead : ICoroutineYield, IWaitForReadResult
+    internal class WaitForReadBuffer : ICoroutineYield, ICoroutineResult<int>
     {
 
         public bool IsYield { get; private set; } = true;
 
-        public int BytesRead { get; private set; }
+        public int Value { get; private set; }
 
-        public WaitForRead(Stream stream, byte[] buffer, int offset, int len)
+        public WaitForReadBuffer(Stream stream, byte[] buffer, int offset, int len)
         {
             stream.BeginRead(buffer, offset, len, (ar) =>
             {
-                BytesRead = stream.EndRead(ar);
+                Value = stream.EndRead(ar);
                 IsYield = false;
             });
         }
 
     }
 
-    public interface IWaitForReadResult
+    internal class WaitForRead : ICoroutineYield, ICoroutineResult<byte[]>
     {
-        
-        int BytesRead { get; }
-                
+
+        public bool IsYield { get; private set; } = true;
+
+        public byte[] Value { get; private set; }
+
+        public WaitForRead(Stream stream, int len)
+        {
+            var buffer = new byte[len];
+            stream.BeginRead(buffer, (ar) =>
+            {
+                IsYield = false;
+
+                var nread = stream.EndRead(ar);
+                if (nread < 0)
+                {
+                    Value = new byte[0];
+                }
+                else
+                {
+                    Array.Resize(ref buffer, nread);
+                    Value = buffer;
+                }
+            });
+        }
+
     }
+
 }

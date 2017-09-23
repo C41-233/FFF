@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using System.Threading;
+using FFF.Base.Linq;
 using FFF.Base.Time;
 
 namespace FFF.Base.Util.Coroutine.Yield
@@ -42,11 +43,19 @@ namespace FFF.Base.Util.Coroutine.Yield
             return new WaitForJob<T1, T2>(arg1, arg2, action);
         }
 
-        public static ICoroutineYield Read(Stream stream, byte[] buffer, out IWaitForReadResult result)
+        public static ICoroutineYield Read(Stream stream, byte[] buffer, out ICoroutineResult<int> result)
         {
-            var c = new WaitForRead(stream, buffer, 0, buffer.Length);
-            result = c;
-            return c;
+            return Read(stream, buffer, 0, buffer.Length, out result);
+        }
+
+        public static ICoroutineYield Read(Stream stream, byte[] buffer, int offset, int len, out ICoroutineResult<int> result)
+        {
+            return F.Assign(new WaitForReadBuffer(stream, buffer, offset, len), out result);
+        }
+
+        public static ICoroutineYield Read(Stream stream, int len, out ICoroutineResult<byte[]> result)
+        {
+            return F.Assign(new WaitForRead(stream, len), out result);
         }
 
         public static ICoroutineYield Thread(Thread thread)

@@ -105,6 +105,13 @@ namespace FFF.Base.Linq
             y = tmp;
         }
 
+        public static TArg Assign<TBase, TArg>(TArg obj, out TBase arg)
+            where TArg : TBase
+        {
+            arg = obj;
+            return obj;
+        }
+
     }
 
     public class WhileTooManyTimesException : Exception

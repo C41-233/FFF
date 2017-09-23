@@ -4,7 +4,7 @@
     public interface ICoroutineResult<out T>
     {
 
-        T Result { get; }
+        T Value { get; }
 
     }
 
