@@ -25,15 +25,15 @@ namespace FFF.Base.Util.Coroutine
             return context.Handle;
         }
 
-        private long now;
+        internal long Now { get; private set; }
 
         public void Update(long timestamp)
         {
-            this.now = timestamp;
+            this.Now = timestamp;
 
             //do timer 必须在event之前进行，以保证定时器到期后立刻恢复执行协程
             {
-                timerManager.Update(now);
+                timerManager.Update(Now);
             }
 
             //do event
@@ -77,7 +77,7 @@ namespace FFF.Base.Util.Coroutine
                 return;
             }
 
-            context.EventYield = null;
+            context.Yield = null;
 
             try
             {
@@ -110,20 +110,29 @@ namespace FFF.Base.Util.Coroutine
                 obj = new WaitForCoroutine(StartCoroutine(enumerator));
             }
 
-            if (obj is ICoroutineEventYield coroutineYield)
+            if (obj is CoroutineInitYieldBase yield)
             {
-                context.EventYield = coroutineYield;
+                yield.Init(this);
             }
 
-            if (obj is ICoroutineTimerYield coroutineTimer)
+            if (obj is WaitForMilliseconds coroutineTimer)
             {
                 context.IsInTimer = true;
-                timerManager.StartTimer(now + coroutineTimer.Timeout, () =>
+                timerManager.StartTimer(Now + coroutineTimer.After, () =>
                 {
                     context.IsInTimer = false;
                     coroutines.Add(context);
                 });
+
+                //这里return，不作为ICoroutineYield处理了
+                return;
             }
+
+            if (obj is ICoroutineYield coroutineYield)
+            {
+                context.Yield = coroutineYield;
+            }
+
         }
 
         private class CoroutineContext
@@ -134,7 +143,7 @@ namespace FFF.Base.Util.Coroutine
 
             private readonly IEnumerator Coroutine;
 
-            public ICoroutineEventYield EventYield { set; private get; }
+            public ICoroutineYield Yield { set; private get; }
 
             public bool IsDisposed
             {
@@ -151,13 +160,13 @@ namespace FFF.Base.Util.Coroutine
 
             public object Current => Coroutine.Current;
 
-            public bool IsWaitForEvent => EventYield?.IsYield ?? false;
+            public bool IsWaitForEvent => Yield?.IsYield ?? false;
             public bool IsSuspended => handle.IsSuspended;
 
-            public CoroutineContext(IEnumerator c, ICoroutineEventYield y = null)
+            public CoroutineContext(IEnumerator c, ICoroutineYield y = null)
             {
                 this.Coroutine = c;
-                this.EventYield = y;
+                this.Yield = y;
             }
 
             public void Callback()

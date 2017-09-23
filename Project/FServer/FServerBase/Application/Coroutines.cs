@@ -49,7 +49,7 @@ namespace FFF.Server.Application
 
         public static IEnumerator AsCoroutineAfter(long milliseconds, FAction coroutine)
         {
-            yield return new WaitForMilliseconds(milliseconds);
+            yield return WaitFor.Milliseconds(milliseconds);
             coroutine();
         }
 
@@ -68,7 +68,7 @@ namespace FFF.Server.Application
             while (true)
             {
                 coroutine();
-                yield return new WaitForMilliseconds(milliseconds);
+                yield return WaitFor.Milliseconds(milliseconds);
             }
         }
 
@@ -81,7 +81,7 @@ namespace FFF.Server.Application
                 {
                     break;
                 }
-                yield return new WaitForMilliseconds(milliseconds);
+                yield return WaitFor.Milliseconds(milliseconds);
             }
         }
 

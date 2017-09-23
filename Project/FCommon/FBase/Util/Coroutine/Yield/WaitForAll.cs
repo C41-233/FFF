@@ -2,16 +2,13 @@
 
 namespace FFF.Base.Util.Coroutine.Yield
 {
-    public class WaitForAll : ICoroutineEventYield
+    internal class WaitForAll : WaitForSequenceBase
     {
 
-        private readonly ICoroutineEventYield[] args;
+        public override bool IsYield => Sequence.All(arg => arg.IsYield == false);
 
-        public bool IsYield => args.All(arg => arg.IsYield == false);
-
-        public WaitForAll(params ICoroutineEventYield[] args)
+        public WaitForAll(ICoroutineYield[] args) : base(args)
         {
-            this.args = args;
         }
 
     }

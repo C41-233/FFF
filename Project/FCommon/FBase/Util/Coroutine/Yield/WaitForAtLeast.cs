@@ -2,17 +2,15 @@
 
 namespace FFF.Base.Util.Coroutine.Yield
 {
-    public class WaitForAtLeast : ICoroutineEventYield
+    internal class WaitForAtLeast : WaitForSequenceBase
     {
 
-        private readonly ICoroutineEventYield[] args;
         private readonly uint count;
 
-        public bool IsYield => args.AtLeast(count, e=>e.IsYield==false);
+        public override bool IsYield => Sequence.AtLeast(count, e=>e.IsYield==false);
 
-        public WaitForAtLeast(uint count, params ICoroutineEventYield[] args)
+        public WaitForAtLeast(uint count, ICoroutineYield[] args) : base(args)
         {
-            this.args = args;
             this.count = count;
         }
     }

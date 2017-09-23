@@ -2,7 +2,7 @@
 
 namespace FFF.Base.Util.Coroutine.Yield
 {
-    public class WaitForJob : ICoroutineEventYield
+    internal class WaitForJob : ICoroutineYield
     {
         public bool IsYield { get; private set; } = true;
 
@@ -14,10 +14,9 @@ namespace FFF.Base.Util.Coroutine.Yield
                 IsYield = false;
             });
         }
-
     }
 
-    public class WaitForJob<T1> : ICoroutineEventYield
+    internal class WaitForJob<T1> : ICoroutineYield
     {
 
         public bool IsYield { get; private set; } = true;
@@ -33,7 +32,7 @@ namespace FFF.Base.Util.Coroutine.Yield
 
     }
 
-    public class WaitForJob<T1, T2> : ICoroutineEventYield
+    internal class WaitForJob<T1, T2> : ICoroutineYield
     {
 
         public bool IsYield { get; private set; } = true;

@@ -1,11 +1,10 @@
 ﻿namespace FFF.Base.Util.Coroutine
 {
 
-    public interface ICoroutineEventYield
+    public interface ICoroutineYield
     {
 
         bool IsYield { get; }
 
     }
-
 }

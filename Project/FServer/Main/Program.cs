@@ -1,4 +1,5 @@
-﻿using FFF.Base.Util.Coroutine.Yield;
+﻿using FFF.Base.Linq;
+using FFF.Base.Util.Coroutine.Yield;
 using FFF.Network.Base;
 using FFF.Server.Application;
 using FFF.Server.Application.Tick;
@@ -27,29 +28,54 @@ namespace Main
         void IApplication.OnInit(string[] args)
         {
             Console.WriteLine("start");
-            Coroutines.StartCoroutine(Do);
-            Coroutines.OnException += (c, e) =>
-            {
-                Console.WriteLine("fuck");
-            };
         }
 
         IEnumerator Do()
         {
             while (true)
             {
-                yield return new WaitForSeconds(1);
-                Console.WriteLine(TimeTick.MillisecondsFromStart);
+                foreach (var i in F.For(10000))
+                {
+                    Coroutines.StartCoroutine(Y);
+                }
+                yield return WaitFor.Seconds(1);
+                Console.WriteLine(TimeTick.MillisecondsFromStartReal);
             }
-
         }
 
         void IApplication.OnDestroy()
         {
         }
 
+        private bool first = true;
+
         void IApplication.OnTick()
         {
+            if (first)
+            {
+                Console.WriteLine(TimeTick.MillisecondsFromStartReal);
+                Coroutines.StartCoroutine(Do);
+            }
+            first = false;
+        }
+
+        IEnumerator Y()
+        {
+            var random = new Random();
+            while (true)
+            {
+                switch (random.Next(3))
+                {
+                    case 0:
+                        var wait = random.Next(60);
+                        yield return WaitFor.Seconds(wait);
+                        break;
+                    default:
+                        yield return null;
+                        break;
+                }
+            }
+
         }
 
     }
