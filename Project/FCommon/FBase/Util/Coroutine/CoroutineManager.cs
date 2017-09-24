@@ -16,7 +16,7 @@ namespace FFF.Base.Util.Coroutine
         public event FAction<ICoroutine, Exception> OnException;
 
         private readonly List<CoroutineContext> coroutines = new List<CoroutineContext>();
-        private readonly TimerManager timerManager = new TimerManager();
+        private readonly TimerManager timerManager = new TimerManager(1000);
         private readonly CoroutineTimeGetter timeGetter;
 
         public CoroutineManager()
@@ -48,7 +48,7 @@ namespace FFF.Base.Util.Coroutine
                 for(var i=0; i<coroutines.Count; i++)
                 {
                     var coroutine = coroutines[i];
-                    if (coroutine.IsDisposed || coroutine.IsInTimer)
+                    if (coroutine.IsDisposed)
                     {
                         continue;
                     }
@@ -130,15 +130,16 @@ namespace FFF.Base.Util.Coroutine
                     coroutines.Add(context);
                 });
 
-                //这里return，不作为ICoroutineYield处理了
                 return;
             }
 
             if (obj is ICoroutineYield coroutineYield)
             {
                 context.Yield = coroutineYield;
+                return;
             }
 
+            throw new CoroutineException($"Cannot use type {obj.GetType()} in yield.");
         }
 
         private class CoroutineContext

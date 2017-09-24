@@ -1,9 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace FFF.Base.Collection.PriorityQueue
 {
-    public class PriorityQueue<T> : IPriorityQueue<T>
+    public class PriorityQueue<T> : IPriorityQueue<T>, IEnumerable<T>
     {
 
         public int Count { get; private set; }
@@ -125,20 +126,25 @@ namespace FFF.Base.Collection.PriorityQueue
             return comparer.Compare(a.Value, b.Value) < 0;
         }
 
-        public IEnumerator<T> Values
+        /// <summary>
+        /// 注意，迭代无顺序
+        /// </summary>
+        public IEnumerator<T> GetEnumerator()
         {
-            get
+            int snapshot = version;
+            for (var i = 1; i <= Count; i++)
             {
-                int snapshot = version;
-                for (var i = 1; i <= Count; i++)
+                if (snapshot != version)
                 {
-                    yield return buffer[i].Value;
-                    if (snapshot != version)
-                    {
-                        throw new InvalidOperationException();
-                    }
+                    throw new InvalidOperationException();
                 }
+                yield return buffer[i].Value;
             }
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         private class ValueNodeList
