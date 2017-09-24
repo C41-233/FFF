@@ -1,16 +1,18 @@
-﻿namespace FFF.Base.Util.Coroutine.Yield
+﻿using FFF.Base.Collection.ReadOnly;
+
+namespace FFF.Base.Util.Coroutine.Yield
 {
 
     internal abstract class WaitForSequenceBase : ICoroutineYieldNeedInit
     {
 
-        protected ICoroutineYield[] Sequence { get; }
-
         public abstract bool IsYield { get; }
+
+        protected IReadOnlyArray<ICoroutineYield> Sequence { get; }
 
         protected WaitForSequenceBase(ICoroutineYield[] sequence)
         {
-            this.Sequence = sequence;
+            this.Sequence = ReadOnly.Of(sequence);
         }
 
         public void Init(ICoroutineTimeGetter time)

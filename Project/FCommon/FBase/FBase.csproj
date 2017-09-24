@@ -49,6 +49,8 @@
     <Compile Include="Collection\Buffer\MemoryBuffer.cs" />
     <Compile Include="Collection\PriorityQueue\IPriorityQueue.cs" />
     <Compile Include="Collection\PriorityQueue\PriorityQueue.cs" />
+    <Compile Include="Collection\ReadOnly\IReadOnlyArray.cs" />
+    <Compile Include="Collection\ReadOnly\ReadOnly.cs" />
     <Compile Include="Linq\DictionaryExtension.cs" />
     <Compile Include="Linq\EnumerableExtension.cs" />
     <Compile Include="Linq\StreamExtension.cs" />
