@@ -12,10 +12,6 @@
             this.Connection = conn;
         }
 
-        public virtual void Send(byte[] bs)
-        {
-            Send(bs, 0, bs.Length);
-        }
         public abstract void Send(byte[] bs, int offset, int len);
 
         public abstract void ReplyPing();

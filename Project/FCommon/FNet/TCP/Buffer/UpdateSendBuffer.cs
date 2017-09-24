@@ -1,15 +1,15 @@
+using FFF.Network.Base;
+using FFF.Network.TCP.Protocol;
 using System;
 using System.IO;
 using System.Net.Sockets;
-using FFF.Network.Base;
-using FFF.Network.TCP.Protocol;
 
 namespace FFF.Network.TCP.Buffer
 {
-    internal class FlushSendBuffer : SendBuffer
+    internal sealed class UpdateSendBuffer : SendBuffer
     {
 
-        public FlushSendBuffer(TcpConnection conn) : base(conn)
+        public UpdateSendBuffer(TcpConnection conn) : base(conn)
         {
         }
 

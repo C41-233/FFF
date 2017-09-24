@@ -1,16 +1,24 @@
 ﻿using System;
+using System.Net;
 using System.Net.Sockets;
 
 namespace FFF.Network.TCP
 {
-    public class TcpSocket
+    public sealed class TcpSocket
     {
 
         private readonly Socket socket;
 
+        private readonly IPEndPoint endPoint;
+
+        public IPAddress IP => endPoint.Address;
+
+        public int Port => endPoint.Port;
+
         public TcpSocket(Socket socket)
         {
             this.socket = socket;
+            this.endPoint = socket.RemoteEndPoint as IPEndPoint;
         }
 
         public void SetNoDelay(bool b)

@@ -2,7 +2,7 @@
 
 namespace FFF.Network.TCP.Buffer
 {
-    internal class ImmediateSendBuffer : SendBuffer 
+    internal sealed class ImmediateSendBuffer : SendBuffer 
     {
 
         private readonly ConcurrentQueue<byte[]> sendBuffer = new ConcurrentQueue<byte[]>();

@@ -18,11 +18,20 @@ namespace FFF.Network.Base
         /// 参数的数据可以直接由应用程序使用和修改，底层服务保证收到的数据是一次Send调用发送的完整数据
         /// </summary>
         event FAction<IConnection, byte[]> OnClientReceive;
+        /// <summary>
+        /// 当调用Close()后，服务器必须逐步断开所有客户端连接并释放资源，当所有操作都完成后，才会触发OnServerClosed
+        /// 因此，在调用Close后，应用层仍必须主动调用Update来更新时序帧，直到OnServerClosed被触发后，才可以停止调用Update
+        /// </summary>
+        event FAction<IServer> OnServerClosed;
 
-        //开始接收客户端连接，此后可以调用EndAccept停止接收客户端连接
+        /// <summary>
+        /// 开始接收客户端连接，此后可以调用EndAccept停止接收客户端连接
+        /// </summary>
         void BeginAccept();
 
-        //不再接收客户端连接，此后可以调用BeginAccept重新接收客户端连接
+        /// <summary>
+        /// 不再接收客户端连接，此后可以调用BeginAccept重新接收客户端连接
+        /// </summary>
         void EndAccept();
 
         /// <summary>
@@ -30,7 +39,10 @@ namespace FFF.Network.Base
         /// </summary>
         void Update();
 
-        //关闭服务器连接
+        /// <summary>
+        /// 关闭服务器连接
+        /// 在调用Close后必须继续更新时序帧（Update），直到OnServerClosed被触发。
+        /// </summary>
         void Close();
 
     }

@@ -5,7 +5,7 @@ namespace FFF.Network.TCP
     public class TcpServerConfig
     {
 
-        public IPAddress Ip
+        public IPAddress IP
         {
             get => ip;
             set => ip = value ?? IPAddress.Any;
@@ -17,7 +17,11 @@ namespace FFF.Network.TCP
             set => ip = value==null ? IPAddress.Any : IPAddress.Parse(value);
         }
 
-        public int MaxConnection = 1000;
+        /// <summary>
+        /// 所允许的TCP最大连接数
+        /// 0表示无限制，但最终还是要受操作系统限制
+        /// </summary>
+        public int MaxConnection = 0;
 
         private IPAddress ip = IPAddress.Any;
 
@@ -48,5 +52,11 @@ namespace FFF.Network.TCP
         /// </summary>
         public bool SendImmediately = false;
 
+        /// <summary>
+        /// 当发送数据时是否阻塞
+        /// </summary>
+        public bool SendBlock = true;
+
     }
+
 }

@@ -1,11 +1,11 @@
-﻿using FFF.Base.Linq;
-using FFF.Base.Util.Coroutine.Yield;
-using FFF.Network.Base;
+﻿using FFF.Network.Base;
+using FFF.Network.Server;
+using FFF.Network.TCP;
 using FFF.Server.Application;
-using FFF.Server.Application.Tick;
 using System;
-using System.Collections;
-using FFF.Base.Util.Coroutine;
+using System.Net.Http;
+using System.Text;
+using FFF.Base.Util;
 
 namespace Main
 {
@@ -26,57 +26,50 @@ namespace Main
 
         private IServer server;
 
+        int client = 0;
+
         void IApplication.OnInit(string[] args)
         {
-            Console.WriteLine("start");
-        }
-
-        IEnumerator Do()
-        {
-            while (true)
+            server = FNet.CreateTCPServer(new TcpServerConfig()
             {
-                foreach (var i in F.For(10000))
-                {
-                    Coroutines.StartCoroutine(Y);
-                }
-                yield return WaitFor.Seconds(1);
-                Console.WriteLine(TimeTick.MillisecondsFromStartReal);
-            }
+                KeepAlive = 5000,
+            });
+
+            server.OnClientConnected += conn =>
+            {
+                Console.WriteLine($"connected: {conn.IP}:{conn.Port}");
+                client++;
+            };
+            server.OnClientDisconnected += (conn, type) =>
+            {
+                Console.WriteLine($"disconnected: {type}");
+            };
+            server.OnClientReceive += (conn, data) =>
+            {
+                var msg = Encoding.UTF8.GetString(data);
+                Console.WriteLine($"receive: {msg}");
+
+                var send = Encoding.UTF8.GetBytes("pong");
+                conn.Send(send);
+            };
+            server.OnServerClosed += server =>
+            {
+                Console.WriteLine("Server closed.");
+            };
+            server.BeginAccept();
         }
 
         void IApplication.OnDestroy()
         {
         }
 
-        private bool first = true;
-
         void IApplication.OnTick()
         {
-            if (first)
+            server.Update();
+            if (client == 3)
             {
-                Console.WriteLine(TimeTick.MillisecondsFromStartReal);
-                Coroutines.StartCoroutine(Do);
+                server.Close();
             }
-            first = false;
-        }
-
-        IEnumerator Y()
-        {
-            var random = new Random();
-            while (true)
-            {
-                switch (random.Next(3))
-                {
-                    case 0:
-                        var wait = random.Next(60);
-                        yield return WaitFor.Seconds(wait);
-                        break;
-                    default:
-                        yield return null;
-                        break;
-                }
-            }
-
         }
 
     }

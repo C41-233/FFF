@@ -8,7 +8,7 @@ using FFF.Base.Util.BitConvert;
 namespace FFF.Network.TCP.Buffer
 {
 
-    internal class ReceiveBuffer
+    internal sealed class ReceiveBuffer
     {
 
         private enum ReceiveStatus

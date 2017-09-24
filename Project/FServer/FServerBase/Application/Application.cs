@@ -1,5 +1,5 @@
-﻿using System;
-using FFF.Server.Application.Tick;
+﻿using FFF.Server.Application.Tick;
+using System;
 
 namespace FFF.Server.Application
 {

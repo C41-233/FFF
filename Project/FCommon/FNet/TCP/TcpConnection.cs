@@ -1,11 +1,12 @@
-﻿using FFF.Base.Util.Atomic;
+﻿using System.Net;
+using FFF.Base.Util.Atomic;
 using FFF.Network.Base;
 using FFF.Network.TCP.Buffer;
 
 namespace FFF.Network.TCP
 {
 
-    internal class TcpConnection : IConnection
+    internal sealed class TcpConnection : IConnection
     {
 
         public ulong ConnectionId { get; } = ConnectionIdProvidor.NextValue();
@@ -22,6 +23,9 @@ namespace FFF.Network.TCP
         private readonly InterlockedBool isClosed = new InterlockedBool(false);
         private readonly InterlockedBool isShutdown = new InterlockedBool(false);
 
+        public IPAddress IP => Socket.IP;
+        public int Port => Socket.Port;
+
         public TcpConnection(TcpSocket socket, TcpConnectionConfig config)
         {
             this.Socket = socket;
@@ -36,7 +40,7 @@ namespace FFF.Network.TCP
             }
             else
             {
-                this.SendBuffer = new FlushSendBuffer(this);
+                this.SendBuffer = new UpdateSendBuffer(this);
                 this.Socket.SetNoDelay(true);
             }
 
@@ -46,11 +50,6 @@ namespace FFF.Network.TCP
         {
             ReceiveBuffer.Begin(timestamp);
             SendBuffer.Begin(timestamp);
-        }
-
-        public void Send(byte[] bs)
-        {
-            SendBuffer.Send(bs);
         }
 
         public void Send(byte[] bs, int offset, int len)

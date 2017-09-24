@@ -7,6 +7,7 @@
         UnrecognizedPackage = -10001,
         PackageSizeTooLarge = -10002,
         KeepAliveTimeout = -10003,
+        ServerClose = -10004,
 
         ConnectionAborted = 10053,
         ConnectionReset = 10054,
