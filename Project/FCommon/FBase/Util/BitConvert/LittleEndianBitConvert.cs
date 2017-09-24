@@ -1,9 +1,9 @@
 ﻿namespace FFF.Base.Util.BitConvert
 {
-    public class LittleEndianBitConvert : BitConvertBase
+    public sealed class LittleEndianBitConvert : IBitConvert
     {
 
-        public override ushort ToUInt16(byte[] bs, int offset)
+        public ushort ToUInt16(byte[] bs, int offset)
         {
             return (ushort)
             (

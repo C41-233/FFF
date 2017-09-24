@@ -1,24 +1,25 @@
 ﻿namespace FFF.Base.Util.Coroutine.Yield
 {
 
-    internal abstract class WaitForSequenceBase : CoroutineInitYieldBase
+    internal abstract class WaitForSequenceBase : ICoroutineYieldNeedInit
     {
 
         protected ICoroutineYield[] Sequence { get; }
+
+        public abstract bool IsYield { get; }
 
         protected WaitForSequenceBase(ICoroutineYield[] sequence)
         {
             this.Sequence = sequence;
         }
 
-        internal sealed override void Init(CoroutineManager manager)
+        public void Init(ICoroutineTimeGetter time)
         {
-            base.Init(manager);
             foreach (var arg in Sequence)
             {
-                if (arg is CoroutineInitYieldBase yield)
+                if (arg is ICoroutineYieldNeedInit yield)
                 {
-                    yield.Init(manager);
+                    yield.Init(time);
                 }
             }
         }

@@ -2,7 +2,7 @@
 
 namespace FFF.Base.Util.Coroutine.Yield
 {
-    internal class WaitForAtLeast : WaitForSequenceBase
+    internal sealed class WaitForAtLeast : WaitForSequenceBase
     {
 
         private readonly uint count;

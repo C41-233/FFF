@@ -1,14 +1,11 @@
-﻿using System;
-using System.Threading;
-
-namespace FFF.Base.Util.Generator
+﻿namespace FFF.Base.Util.Generator
 {
 
     public interface IULongGenerator : IValueGenerator<ulong>
     {
     }
 
-    public class SequenceULongGenerator : IULongGenerator
+    public sealed class SequenceULongGenerator : IULongGenerator
     {
 
         private ulong current;

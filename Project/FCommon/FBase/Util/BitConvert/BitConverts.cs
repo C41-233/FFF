@@ -8,11 +8,4 @@
 
     }
 
-    public interface IBitConvert
-    {
-
-        ushort ToUInt16(byte[] bs);
-        ushort ToUInt16(byte[] bs, int offset);
-
-    }
 }

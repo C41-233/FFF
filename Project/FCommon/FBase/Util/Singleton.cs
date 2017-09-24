@@ -23,6 +23,5 @@ namespace FFF.Base.Util
 
     public class SingletonConflictException : Exception
     {
-        
     }
 }

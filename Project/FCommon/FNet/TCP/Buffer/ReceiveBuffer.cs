@@ -3,6 +3,7 @@ using System.Net.Sockets;
 using FFF.Base.Collection.Buffer;
 using FFF.Network.Base;
 using FFF.Network.TCP.Protocol;
+using FFF.Base.Util.BitConvert;
 
 namespace FFF.Network.TCP.Buffer
 {

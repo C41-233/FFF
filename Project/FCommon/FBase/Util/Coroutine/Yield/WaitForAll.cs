@@ -2,7 +2,7 @@
 
 namespace FFF.Base.Util.Coroutine.Yield
 {
-    internal class WaitForAll : WaitForSequenceBase
+    internal sealed class WaitForAll : WaitForSequenceBase
     {
 
         public override bool IsYield => Sequence.All(arg => arg.IsYield == false);

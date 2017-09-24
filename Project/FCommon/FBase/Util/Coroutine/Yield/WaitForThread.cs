@@ -2,7 +2,7 @@
 
 namespace FFF.Base.Util.Coroutine.Yield
 {
-    internal class WaitForThread : ICoroutineYield
+    internal sealed class WaitForThread : ICoroutineYield
     {
         public bool IsYield { get; private set; } = true;
 

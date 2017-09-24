@@ -2,7 +2,7 @@
 
 namespace FFF.Base.Util.Atomic
 {
-    public class InterlockedLong : Atomic<long>
+    public sealed class InterlockedLong : Atomic<long>
     {
 
         public override long Value => value;

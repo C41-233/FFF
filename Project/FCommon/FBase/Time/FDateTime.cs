@@ -4,7 +4,7 @@ using System.Globalization;
 namespace FFF.Base.Time
 {
 
-    public class FDateTime
+    public sealed class FDateTime
     {
 
         public static FDateTime Now => new FDateTime(DateTime.Now);

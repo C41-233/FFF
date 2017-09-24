@@ -2,8 +2,9 @@
 using System.Threading;
 using FFF.Base.Linq;
 using FFF.Base.Time;
+using FFF.Base.Util.Coroutine.Yield;
 
-namespace FFF.Base.Util.Coroutine.Yield
+namespace FFF.Base.Util.Coroutine
 {
     public static class WaitFor
     {
@@ -50,12 +51,12 @@ namespace FFF.Base.Util.Coroutine.Yield
 
         public static ICoroutineYield Read(Stream stream, byte[] buffer, int offset, int len, out ICoroutineResult<int> result)
         {
-            return F.Assign(new WaitForReadBuffer(stream, buffer, offset, len), out result);
+            return F.Assign(out result, new WaitForReadBuffer(stream, buffer, offset, len));
         }
 
         public static ICoroutineYield Read(Stream stream, int len, out ICoroutineResult<byte[]> result)
         {
-            return F.Assign(new WaitForRead(stream, len), out result);
+            return F.Assign(out result, new WaitForRead(stream, len));
         }
 
         public static ICoroutineYield Thread(Thread thread)

@@ -2,7 +2,7 @@
 
 namespace FFF.Base.Util.Atomic
 {
-    public class InterlockedBool : Atomic<bool>
+    public sealed class InterlockedBool : Atomic<bool>
     {
 
         public InterlockedBool(bool value)

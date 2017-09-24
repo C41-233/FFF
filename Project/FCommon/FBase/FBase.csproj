@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Collection\Buffer\IMemoryBuffer.cs" />
     <Compile Include="Collection\Buffer\MemoryBuffer.cs" />
     <Compile Include="Collection\PriorityQueue\IPriorityQueue.cs" />
     <Compile Include="Collection\PriorityQueue\PriorityQueue.cs" />
@@ -63,15 +64,15 @@
     <Compile Include="Util\Atomic\InterlockedBool.cs" />
     <Compile Include="Util\Atomic\InterlockedLong.cs" />
     <Compile Include="Util\Atomic\Atomic.cs" />
-    <Compile Include="Util\BitConvert\BitConvertBase.cs" />
     <Compile Include="Util\BitConvert\BitConverts.cs" />
+    <Compile Include="Util\BitConvert\IBitConvert.cs" />
     <Compile Include="Util\BitConvert\LittleEndianBitConvert.cs" />
     <Compile Include="Util\Coroutine\CoroutineException.cs" />
     <Compile Include="Util\Coroutine\CoroutineManager.cs" />
-    <Compile Include="Util\Coroutine\CoroutineInitYieldBase.cs" />
     <Compile Include="Util\Coroutine\ICoroutine.cs" />
     <Compile Include="Util\Coroutine\ICoroutineResult.cs" />
     <Compile Include="Util\Coroutine\ICoroutineYield.cs" />
+    <Compile Include="Util\Coroutine\Yield\ICoroutineYieldNeedInit.cs" />
     <Compile Include="Util\Coroutine\Yield\WaitForAll.cs" />
     <Compile Include="Util\Coroutine\Yield\WaitForAny.cs" />
     <Compile Include="Util\Coroutine\Yield\WaitForAtLeast.cs" />
@@ -81,7 +82,7 @@
     <Compile Include="Util\Coroutine\Yield\WaitForRead.cs" />
     <Compile Include="Util\Coroutine\Yield\WaitForSequenceBase.cs" />
     <Compile Include="Util\Coroutine\Yield\WaitForThread.cs" />
-    <Compile Include="Util\Coroutine\Yield\WaitFor.cs" />
+    <Compile Include="Util\Coroutine\WaitFor.cs" />
     <Compile Include="Util\Func.cs" />
     <Compile Include="Util\Generator\ULongGenerator.cs" />
     <Compile Include="Util\Generator\IValueGenerator.cs" />

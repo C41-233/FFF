@@ -10,13 +10,19 @@ namespace FFF.Base.Util.Coroutine
     /// <summary>
     /// 协程
     /// </summary>
-    public class CoroutineManager
+    public sealed class CoroutineManager
     {
 
         public event FAction<ICoroutine, Exception> OnException;
 
         private readonly List<CoroutineContext> coroutines = new List<CoroutineContext>();
         private readonly TimerManager timerManager = new TimerManager();
+        private readonly CoroutineTimeGetter timeGetter;
+
+        public CoroutineManager()
+        {
+            this.timeGetter = new CoroutineTimeGetter(this);
+        }
 
         public ICoroutine StartCoroutine(IEnumerator coroutine)
         {
@@ -25,15 +31,15 @@ namespace FFF.Base.Util.Coroutine
             return context.Handle;
         }
 
-        internal long Now { get; private set; }
+        private long now;
 
         public void Update(long timestamp)
         {
-            this.Now = timestamp;
+            this.now = timestamp;
 
             //do timer 必须在event之前进行，以保证定时器到期后立刻恢复执行协程
             {
-                timerManager.Update(Now);
+                timerManager.Update(now);
             }
 
             //do event
@@ -110,15 +116,15 @@ namespace FFF.Base.Util.Coroutine
                 obj = new WaitForCoroutine(StartCoroutine(enumerator));
             }
 
-            if (obj is CoroutineInitYieldBase yield)
+            if (obj is ICoroutineYieldNeedInit yield)
             {
-                yield.Init(this);
+                yield.Init(timeGetter);
             }
 
             if (obj is WaitForMilliseconds coroutineTimer)
             {
                 context.IsInTimer = true;
-                timerManager.StartTimer(Now + coroutineTimer.After, () =>
+                timerManager.StartTimer(now + coroutineTimer.After, () =>
                 {
                     context.IsInTimer = false;
                     coroutines.Add(context);
@@ -175,6 +181,20 @@ namespace FFF.Base.Util.Coroutine
             }
         }
 
+        private class CoroutineTimeGetter : ICoroutineTimeGetter
+        {
+
+            private readonly CoroutineManager manager;
+
+            public CoroutineTimeGetter(CoroutineManager manager)
+            {
+                this.manager = manager;
+            }
+
+            public long Now => manager.now;
+
+        }
+
     }
 
     internal class CoroutineHandle : ICoroutine
@@ -200,6 +220,13 @@ namespace FFF.Base.Util.Coroutine
         {
             IsDone = true;
         }
+    }
+
+    internal interface ICoroutineTimeGetter
+    {
+        
+        long Now { get; }
+
     }
 
 }

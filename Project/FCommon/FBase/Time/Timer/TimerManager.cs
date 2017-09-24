@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace FFF.Base.Time.Timer
 {
-    public class TimerManager
+    public sealed class TimerManager
     {
 
         public event Action<ITimer, Exception> OnException;

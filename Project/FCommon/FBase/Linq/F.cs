@@ -76,7 +76,7 @@ namespace FFF.Base.Linq
             }
         }
 
-        public static IEnumerable<int> While()
+        public static IEnumerable<int> Forever()
         {
             var i = 0;
             while (true)
@@ -105,7 +105,7 @@ namespace FFF.Base.Linq
             y = tmp;
         }
 
-        public static TArg Assign<TBase, TArg>(TArg obj, out TBase arg)
+        public static TArg Assign<TBase, TArg>(out TBase arg, TArg obj)
             where TArg : TBase
         {
             arg = obj;

@@ -2,7 +2,7 @@
 
 namespace FFF.Base.Util.Coroutine.Yield
 {
-    internal class WaitForJob : ICoroutineYield
+    internal sealed class WaitForJob : ICoroutineYield
     {
         public bool IsYield { get; private set; } = true;
 
@@ -10,13 +10,19 @@ namespace FFF.Base.Util.Coroutine.Yield
         {
             ThreadPool.QueueUserWorkItem(state =>
             {
-                action();
-                IsYield = false;
+                try
+                {
+                    action();
+                }
+                finally
+                {
+                    IsYield = false;
+                }
             });
         }
     }
 
-    internal class WaitForJob<T1> : ICoroutineYield
+    internal sealed class WaitForJob<T1> : ICoroutineYield
     {
 
         public bool IsYield { get; private set; } = true;
@@ -25,14 +31,20 @@ namespace FFF.Base.Util.Coroutine.Yield
         {
             ThreadPool.QueueUserWorkItem(state =>
             {
-                action(arg1);
-                IsYield = false;
+                try
+                {
+                    action(arg1);
+                }
+                finally
+                {
+                    IsYield = false;
+                }
             });
         }
 
     }
 
-    internal class WaitForJob<T1, T2> : ICoroutineYield
+    internal sealed class WaitForJob<T1, T2> : ICoroutineYield
     {
 
         public bool IsYield { get; private set; } = true;
@@ -41,8 +53,14 @@ namespace FFF.Base.Util.Coroutine.Yield
         {
             ThreadPool.QueueUserWorkItem(state =>
             {
-                action(arg1, arg2);
-                IsYield = false;
+                try
+                {
+                    action(arg1, arg2);
+                }
+                finally
+                {
+                    IsYield = false;
+                }
             });
         }
 
