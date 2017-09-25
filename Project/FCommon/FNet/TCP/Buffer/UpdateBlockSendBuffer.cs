@@ -6,10 +6,10 @@ using System.Net.Sockets;
 
 namespace FFF.Network.TCP.Buffer
 {
-    internal sealed class UpdateSendBuffer : SendBuffer
+    internal sealed class UpdateBlockSendBuffer : SendBuffer
     {
 
-        public UpdateSendBuffer(TcpConnection conn) : base(conn)
+        public UpdateBlockSendBuffer(TcpConnection conn) : base(conn)
         {
         }
 

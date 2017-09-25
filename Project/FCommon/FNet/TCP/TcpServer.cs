@@ -27,7 +27,7 @@ namespace FFF.Network.TCP
         public event FAction<IServer> OnServerClosed;
 
         private readonly Socket sysSocket;
-        private readonly TcpConnectionConfig connectionConfig;
+        internal TcpConnectionConfig ConnectionConfig { get; }
 
         private readonly ConcurrentQueue<TcpConnection> acceptQueue = new ConcurrentQueue<TcpConnection>();
         private readonly ConcurrentQueue<Tuple<TcpConnection, ConnectionCloseType>> closeQueue = new ConcurrentQueue<Tuple<TcpConnection, ConnectionCloseType>>();
@@ -47,11 +47,12 @@ namespace FFF.Network.TCP
 
             this.sysSocket.Listen(config.Backlog);
 
-            this.connectionConfig = new TcpConnectionConfig()
+            this.ConnectionConfig = new TcpConnectionConfig()
             {
                 Server = this,
 
                 KeepAlive = config.KeepAlive,
+                NoDelay = config.NoDelay,
                 PackageMaxSize = config.PackageMaxSize,
                 ReadCacheSize = config.ReadCacheSize,
                 SendImmediately = config.SendImmediately,
@@ -106,7 +107,7 @@ namespace FFF.Network.TCP
             if (acceptController.CanAccept)
             {
                 acceptController.OnConnect();
-                var connection = new TcpConnection(new TcpSocket(socket), connectionConfig);
+                var connection = new TcpConnection(this, new TcpSocket(socket));
                 acceptQueue.Enqueue(connection);
             }
             else
@@ -134,12 +135,12 @@ namespace FFF.Network.TCP
 
         public void Update()
         {
-            long nowTime = FDateTime.Now.TimeStamp;
-
             if (mode == ServerMode.Closed)
             {
                 return;
             }
+
+            long nowTime = FDateTime.Now.TimeStamp;
 
             var waitCloseWatchDog = 0; //仅当服务器的所有事件处理都完成后，才可以触发OnServerClosed
 

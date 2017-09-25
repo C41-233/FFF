@@ -57,6 +57,8 @@ namespace FFF.Network.TCP
         /// </summary>
         public bool SendBlock = true;
 
+        public bool NoDelay = true;
+
     }
 
 }

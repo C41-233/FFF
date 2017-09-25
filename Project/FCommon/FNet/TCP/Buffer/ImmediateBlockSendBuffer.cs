@@ -2,12 +2,12 @@
 
 namespace FFF.Network.TCP.Buffer
 {
-    internal sealed class ImmediateSendBuffer : SendBuffer 
+    internal sealed class ImmediateBlockSendBuffer : SendBuffer 
     {
 
         private readonly ConcurrentQueue<byte[]> sendBuffer = new ConcurrentQueue<byte[]>();
 
-        public ImmediateSendBuffer(TcpConnection conn) : base(conn)
+        public ImmediateBlockSendBuffer(TcpConnection conn) : base(conn)
         {
         }
 

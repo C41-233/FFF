@@ -17,7 +17,7 @@ namespace FFF.Network.TCP
         public ReceiveBuffer ReceiveBuffer { get; }
         public SendBuffer SendBuffer { get; }
 
-        public TcpConnectionConfig Config { get; }
+        internal TcpConnectionConfig Config => Server.ConnectionConfig;
 
         public bool IsShutdown => isShutdown;
         private readonly InterlockedBool isClosed = new InterlockedBool(false);
@@ -26,24 +26,22 @@ namespace FFF.Network.TCP
         public IPAddress IP => Socket.IP;
         public int Port => Socket.Port;
 
-        public TcpConnection(TcpSocket socket, TcpConnectionConfig config)
+        public TcpConnection(TcpServer server, TcpSocket socket)
         {
             this.Socket = socket;
-            this.Server = config.Server;
-            this.Config = config;
+            this.Server = server;
 
             this.ReceiveBuffer = new ReceiveBuffer(this);
-            if (config.SendImmediately)
+            if (Config.SendImmediately)
             {
-                this.SendBuffer = new ImmediateSendBuffer(this);
-                this.Socket.SetNoDelay(true);
+                this.SendBuffer = new ImmediateBlockSendBuffer(this);
             }
             else
             {
-                this.SendBuffer = new UpdateSendBuffer(this);
-                this.Socket.SetNoDelay(true);
+                this.SendBuffer = new UpdateBlockSendBuffer(this);
             }
 
+            this.Socket.SetNoDelay(Config.NoDelay);
         }
 
         public void Begin(long timestamp)

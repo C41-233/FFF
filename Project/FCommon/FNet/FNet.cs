@@ -1,7 +1,7 @@
 ﻿using FFF.Network.Base;
 using FFF.Network.TCP;
 
-namespace FFF.Network.Server
+namespace FFF.Network
 {
     public static class FNet
     {

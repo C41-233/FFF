@@ -7,6 +7,7 @@
 
         public bool SendImmediately;
         public long KeepAlive;
+        public bool NoDelay;
         public int ReadCacheSize;
         public int PackageMaxSize;
 
