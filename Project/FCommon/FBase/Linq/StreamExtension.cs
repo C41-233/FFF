@@ -16,5 +16,10 @@ namespace FFF.Base.Linq
             return stream.BeginRead(buffer, 0, buffer.Length, callback, stream);
         }
 
+        public static void Write(this Stream stream, byte[] bs)
+        {
+            stream.Write(bs, 0, bs.Length);
+        }
+
     }
 }

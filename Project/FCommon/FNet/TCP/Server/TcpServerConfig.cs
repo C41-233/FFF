@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace FFF.Network.TCP
+namespace FFF.Network.TCP.Server
 {
     public class TcpServerConfig
     {

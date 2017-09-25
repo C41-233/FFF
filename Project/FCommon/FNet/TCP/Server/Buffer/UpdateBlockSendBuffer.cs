@@ -1,10 +1,10 @@
-using FFF.Network.Base;
-using FFF.Network.TCP.Protocol;
 using System;
 using System.IO;
 using System.Net.Sockets;
+using FFF.Base.Linq;
+using FFF.Network.Base;
 
-namespace FFF.Network.TCP.Buffer
+namespace FFF.Network.TCP.Server.Buffer
 {
     internal sealed class UpdateBlockSendBuffer : SendBuffer
     {
@@ -23,7 +23,7 @@ namespace FFF.Network.TCP.Buffer
                 {
                     return;
                 }
-                sendBuffer.WriteByte((byte) PackageType.Pong);
+                sendBuffer.Write(Pong);
             }
         }
 

@@ -1,4 +1,4 @@
-﻿namespace FFF.Network.TCP
+﻿namespace FFF.Network.TCP.Server
 {
     internal class TcpConnectionConfig
     {

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Net.Sockets;
 using FFF.Base.Collection.Buffer;
+using FFF.Base.Util.BitConvert;
 using FFF.Network.Base;
 using FFF.Network.TCP.Protocol;
-using FFF.Base.Util.BitConvert;
 
-namespace FFF.Network.TCP.Buffer
+namespace FFF.Network.TCP.Server.Buffer
 {
 
     internal sealed class ReceiveBuffer

@@ -43,6 +43,11 @@ namespace FFF.Network.TCP
             this.socket.Close();
         }
 
+        public void Send(byte[] bs)
+        {
+            this.socket.Send(bs);
+        }
+
         public void Send(byte[] bs, int offset, int len)
         {
             this.socket.Send(bs, offset, len, SocketFlags.None);

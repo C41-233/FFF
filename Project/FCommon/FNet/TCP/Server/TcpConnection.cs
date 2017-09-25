@@ -1,9 +1,9 @@
 ﻿using System.Net;
 using FFF.Base.Util.Atomic;
 using FFF.Network.Base;
-using FFF.Network.TCP.Buffer;
+using FFF.Network.TCP.Server.Buffer;
 
-namespace FFF.Network.TCP
+namespace FFF.Network.TCP.Server
 {
 
     internal sealed class TcpConnection : IConnection

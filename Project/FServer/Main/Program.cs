@@ -1,11 +1,10 @@
-﻿using FFF.Network.Base;
+﻿using FFF.Network;
+using FFF.Network.Base;
 using FFF.Network.TCP;
 using FFF.Server.Application;
 using System;
-using System.Net.Http;
 using System.Text;
-using FFF.Base.Util;
-using FFF.Network;
+using FFF.Network.TCP.Server;
 
 namespace Main
 {
@@ -30,24 +29,25 @@ namespace Main
 
         void IApplication.OnInit(string[] args)
         {
-            server = FNet.CreateTCPServer(new TcpServerConfig()
+            server = FNet.CreateTcpServer(new TcpServerConfig()
             {
                 KeepAlive = 5000,
+                SendImmediately = true,
             });
 
             server.OnClientConnected += conn =>
             {
-                Console.WriteLine($"connected: {conn.IP}:{conn.Port}");
+                Console.WriteLine($"connected: {conn.ConnectionId} {conn.IP}:{conn.Port}");
                 client++;
             };
             server.OnClientDisconnected += (conn, type) =>
             {
-                Console.WriteLine($"disconnected: {type}");
+                Console.WriteLine($"disconnected: {conn.ConnectionId} {type}");
             };
             server.OnClientReceive += (conn, data) =>
             {
                 var msg = Encoding.UTF8.GetString(data);
-                Console.WriteLine($"receive: {msg}");
+                Console.WriteLine($"receive: {conn.ConnectionId} {msg}");
 
                 var send = Encoding.UTF8.GetBytes("pong");
                 conn.Send(send);
