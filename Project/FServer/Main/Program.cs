@@ -1,10 +1,9 @@
 ﻿using FFF.Network;
 using FFF.Network.Base;
-using FFF.Network.TCP;
+using FFF.Network.TCP.Server;
 using FFF.Server.Application;
 using System;
 using System.Text;
-using FFF.Network.TCP.Server;
 
 namespace Main
 {
